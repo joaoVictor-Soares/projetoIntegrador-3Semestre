@@ -1,0 +1,11 @@
+Fazer uma plataforma mobile e web que centraliza trilhas de aprendizado.
+
+Criar um acesso para funcionário e um acesso para rh
+
+Na página funcionário, terá informações pessoais, sobre seu desempenho nas trilhas de aprendizado e novos cursos e trilhas a seguir (criar checkbox para cada módulo de possíveis trilhas fictícias)
+
+Na página para rh, manter dados atualizados e dashboards dos funcionários, e possibilidade de adicionar novas trilhas
+
+Conter um chatbot para guia dentro da plataforma
+Caso possível, salvar os dados em um banco de dados na nuvem
+Talvez fazer um servidor em flask para comunicações entre tecnologias
