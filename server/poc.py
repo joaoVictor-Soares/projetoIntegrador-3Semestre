@@ -28,45 +28,52 @@ def buscarDados(api):
     else:
         print("erro")
        
-#TODO: terminar de documentar o código
+def dadosCursosTraduzidos():
+    """
+    Função que exporta os dados dos cursos traduzidos:
+    - titulo
+    - resumo
+    - link
+    - nivel
+    - duração
+    """
+    # busca os dados da função e confere o formato para posterior desmenbramento
+    dados = buscarDados(url)
+    if not isinstance(dados, dict):
+        print("formato invalido")
 
-dados = buscarDados(url)
-if not isinstance(dados, dict):
-    print("formato invalido")
+    # pega apenas os módulos, pois la está os principais dados dos cursos
+    lista_de_modulos = dados.get("modules", [])
 
-# print(dados.keys())
-lista_de_modulos = dados.get("modules", [])
+    # percorre os dados dentro do módulo
+    for modulo in lista_de_modulos[:20]:
 
-for modulo in lista_de_modulos[:10]:
+        # pegamos os textos originais
+        tituloOrigin = modulo.get("title", "")
+        resumoOrigin = modulo.get("summary", "") 
+        
+        # transformamos a lista ['beginner'] em string "beginner"
+        niveis_lista = modulo.get("levels", [])
+        nivelOrigin = ", ".join(niveis_lista) if niveis_lista else "Não informado"
 
-    # 1. Pegamos os textos originais
-    tituloOrigin = modulo.get("title", "")
-    resumoOrigin = modulo.get("summary", "") 
-    
-    # 2. TRATAMENTO DO NÍVEL: Transformamos a lista ['beginner'] em string "beginner"
-    niveis_lista = modulo.get("levels", [])
-    nivelOrigin = ", ".join(niveis_lista) if niveis_lista else "Não informado"
+        # tradução 
+        titulo = tradutor.translate(tituloOrigin)
+        resumo = tradutor.translate(resumoOrigin)
+        nivel = tradutor.translate(nivelOrigin)
 
-    # 3. Tradução (agora tudo é String, o tradutor não vai reclamar)
-    titulo = tradutor.translate(tituloOrigin)
-    resumo = tradutor.translate(resumoOrigin)
-    nivel = tradutor.translate(nivelOrigin)
+        # json que será enviado para o front
+        item_formatado = {
+            "titulo": titulo,
+            "resumo": resumo,
+            "link": modulo.get("url"),
+            "nivel": nivel.capitalize(),
+            "duracao": modulo.get("duration_in_minutes") 
+        }
 
-    # 4. Montagem do item para o seu JSON final
-    item_formatado = {
-        "titulo": titulo,
-        "resumo": resumo,
-        "link": modulo.get("url"),
-        "nivel": nivel,
-        "duracao": modulo.get("duration_in_minutes") 
-    }
+        dados_exportaveis.append(item_formatado)
 
-    dados_exportaveis.append(item_formatado)
+    # forma um json estruturado
+    dadosJson = json.dumps(dados_exportaveis, indent=4, ensure_ascii=False)
 
-dadosJson = json.dumps(dados_exportaveis, indent=4, ensure_ascii=False)
-
-print(dadosJson)
-#tamanho = len(dados)
-
-
+    return(dadosJson)
 
