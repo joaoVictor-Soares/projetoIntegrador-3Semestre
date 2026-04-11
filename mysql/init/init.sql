@@ -17,3 +17,7 @@ CREATE TABLE IF NOT EXISTS cursos(
     PRIMARY KEY(id)
 )
 
+CREATE TABLE IF NOT EXISTS login(
+    id 
+)
+

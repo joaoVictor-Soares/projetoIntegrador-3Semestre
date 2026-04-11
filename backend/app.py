@@ -1,16 +1,47 @@
+import json
 from flask import Flask, request, jsonify
+from db import conectar
+from config import SECRET_KEY, FLASK_DEBUG
 from flask_cors import CORS
 from poc import dadosCursosTraduzidos
 
 app = Flask(__name__)
 CORS(app)
 
-@app.get("/buscar_cursos")
+def salvarCursosNoBanco(jsonDados):
+
+    conexao = conectar()
+    cursor = conexao.cursor()
+
+    cursos = json.loads(jsonDados)
+
+    for curso in cursos:
+        titulo = curso['titulo']
+        resumo = curso['resumo']
+        link = curso['link']
+        nivel = curso['nivel']
+        duracao = curso['duracao']
+
+        try:
+            cursor.execute(
+                "INSERT INTO cursos (titulo, resumo, link, nivel, duracao) VALUES (%s, %s, %s, %s, %s)",
+                (titulo, resumo, link, nivel, duracao)
+            )
+        except Exception as e:
+            print(e)
+        
+    conexao.commit()
+    cursor.close()
+    conexao.close()
+
+@app.get("/")
 def buscarCursos():
 
     dados = dadosCursosTraduzidos()
+    if(dados):
+        salvarCursosNoBanco(dados)
     return dados
 
 if __name__ == "__main__":
-    app.run(host="127.0.0.1", port=4567, debug=False)
+    app.run(host="0.0.0.0", port=5000, debug=FLASK_DEBUG)
 

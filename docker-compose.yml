@@ -8,7 +8,7 @@ services:
     env_file:
       - .env
     
-    enviroment:
+    environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
       MYSQL_DATABASE: ${MYSQL_DATABASE} 
       MYSQL_USER: ${MYSQL_USER}
@@ -27,6 +27,7 @@ services:
       timeout: 5s
       retries: 30
       start_period: 25s
+
   backend:
     build:
       context: ./backend
@@ -40,7 +41,7 @@ services:
       mysql:
         condition: service_healthy
     
-    enviroment:
+    environment:
       DB_HOST: ${DB_HOST}
       DB_PORT: ${DB_PORT}
       DB_USER: ${DB_USER}

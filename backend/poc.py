@@ -46,7 +46,7 @@ def dadosCursosTraduzidos():
     lista_de_modulos = dados.get("modules", [])
 
     # percorre os dados dentro do módulo
-    for modulo in lista_de_modulos[:20]:
+    for modulo in lista_de_modulos[:100]:
 
         # pegamos os textos originais
         tituloOrigin = modulo.get("title", "")
@@ -76,4 +76,5 @@ def dadosCursosTraduzidos():
     dadosJson = json.dumps(dados_exportaveis, indent=4, ensure_ascii=False)
 
     return(dadosJson)
+
 
