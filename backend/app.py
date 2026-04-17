@@ -8,39 +8,59 @@ from poc import dadosCursosTraduzidos
 app = Flask(__name__)
 CORS(app)
 
-def salvarCursosNoBanco(jsonDados):
+# def salvarCursosNoBanco(jsonDados):
 
+#     conexao = conectar()
+#     cursor = conexao.cursor()
+
+#     cursos = json.loads(jsonDados)
+
+#     for curso in cursos:
+#         titulo = curso['titulo']
+#         resumo = curso['resumo']
+#         link = curso['link']
+#         nivel = curso['nivel']
+#         duracao = curso['duracao']
+
+#         try:
+#             cursor.execute(
+#                 "INSERT INTO cursos (titulo, resumo, link, nivel, duracao) VALUES (%s, %s, %s, %s, %s)",
+#                 (titulo, resumo, link, nivel, duracao)
+#             )
+#         except Exception as e:
+#             print(e)
+        
+#     conexao.commit()
+#     cursor.close()
+#     conexao.close()
+
+
+#TODO: melhorar essa lógica de login
+@app.get("/login/<username>/<password>")
+def login(username: str, password: str):
     conexao = conectar()
     cursor = conexao.cursor()
+    logs = 0
 
-    cursos = json.loads(jsonDados)
+    try:
+        cursor.execute(
+            "SELECT id FROM login WHERE username = %s AND password = %s",
+            (username, password)
+        )
 
-    for curso in cursos:
-        titulo = curso['titulo']
-        resumo = curso['resumo']
-        link = curso['link']
-        nivel = curso['nivel']
-        duracao = curso['duracao']
+        users = cursor.fetchall()
+        if len(users) != 0:
+            logs = 1
 
-        try:
-            cursor.execute(
-                "INSERT INTO cursos (titulo, resumo, link, nivel, duracao) VALUES (%s, %s, %s, %s, %s)",
-                (titulo, resumo, link, nivel, duracao)
-            )
-        except Exception as e:
-            print(e)
-        
-    conexao.commit()
-    cursor.close()
-    conexao.close()
+        cursor.close()
+        conexao.close()
+    
+    except Exception as e:
+        print(e)
 
-@app.get("/")
-def buscarCursos():
-
-    dados = dadosCursosTraduzidos()
-    if(dados):
-        salvarCursosNoBanco(dados)
-    return dados
+    if logs == 0:
+        return "0"
+    return "1"
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000, debug=FLASK_DEBUG)
