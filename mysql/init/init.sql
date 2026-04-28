@@ -18,6 +18,12 @@ CREATE TABLE IF NOT EXISTS cursos(
 )
 
 CREATE TABLE IF NOT EXISTS login(
-    id 
+    id BIGINT NOT NULL,
+
+    usermane VARCHAR(50) NOT NULL,
+
+    password VARCHAR(50)
+
+    PRIMARY KEY(id)
 )
 

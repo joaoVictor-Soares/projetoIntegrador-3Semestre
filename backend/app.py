@@ -1,4 +1,7 @@
 import json
+import secrets
+import base64
+import random
 from flask import Flask, request, jsonify
 from db import conectar
 from config import SECRET_KEY, FLASK_DEBUG
@@ -40,17 +43,15 @@ CORS(app)
 def login(username: str, password: str):
     conexao = conectar()
     cursor = conexao.cursor()
-    logs = 0
+    users = ""
 
     try:
         cursor.execute(
-            "SELECT id FROM login WHERE username = %s AND password = %s",
+            "SELECT token FROM login WHERE username = %s AND password = %s",
             (username, password)
         )
 
         users = cursor.fetchall()
-        if len(users) != 0:
-            logs = 1
 
         cursor.close()
         conexao.close()
@@ -58,9 +59,67 @@ def login(username: str, password: str):
     except Exception as e:
         print(e)
 
-    if logs == 0:
-        return "0"
-    return "1"
+    if not users:
+        return jsonify({"erro": "Usuário ou senha incorretos"}), 401
+    return users
+
+@app.post("/cadastro")
+def cadastro():
+    dados = request.get_json(force=True)
+
+    if not dados or "username" not in dados or "password" not in dados:
+        return jsonify({
+            "erro": "Campos inválidos"
+        })
+
+    #id = random.randint(1,100)
+    username = dados["username"]
+    password = dados["password"]
+    token = secrets.token_bytes(16)
+    token_string = base64.b64encode(token).decode('utf-8')
+
+    conexao = conectar()
+    cursor = conexao.cursor()
+
+    try:
+        cursor.execute(
+            "INSERT INTO login (username, password, token) VALUES(%s, %s, %s)",
+            (username, password, token_string)
+        )
+
+        conexao.commit()
+        cursor.close()
+        conexao.close()
+
+        return jsonify({
+            "status": 201,
+            "token": token_string
+        })
+        
+    except Exception as e:
+         return jsonify({"erro": str(e)}), 500
+    
+@app.get("/buscar_cursos")
+def buscarCursos():
+
+    conexao = conectar()
+    cursor = conexao.cursor(dictionary=True)
+
+    try:
+        cursor.execute(
+            "SELECT id, titulo, resumo, link, nivel, duracao FROM cursos"
+        )
+
+        cursos = cursor.fetchall()
+
+        return jsonify(cursos)
+
+    except Exception as e:
+        return jsonify({"erro": str(e)}), 500
+    finally:
+        cursor.close()
+        conexao.close()
+
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000, debug=FLASK_DEBUG)
