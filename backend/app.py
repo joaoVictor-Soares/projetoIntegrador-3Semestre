@@ -62,6 +62,15 @@ def login(username: str, password: str):
         return "0"
     return "1"
 
+@app.post("/cadastrar")
+def cadastro():
+    conexao = conectar()
+    cursor = conexao.cursor()
+
+    cursor.execute(
+        "INSERT INTO login (username, password) VALUES"
+    )
+
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000, debug=FLASK_DEBUG)
 
