@@ -5,9 +5,32 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  
+  background-color: #2b2d31; 
+  color: #ffffff;
 }
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}
+
+input, button, select {
+  font-family: inherit;
+  outline: none;
+}
+
+/* Customização simples da barra de rolagem para combinar com o tema */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #2b2d31; 
+}
+::-webkit-scrollbar-thumb {
+  background: #4a4d53; 
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #85a5ff; 
 }

@@ -1,216 +1,124 @@
-import { useState } from "react"
+import React, { useState } from "react";
+import '../styles/RH.css';
 
 function RH() {
+  const [funcionarios, setFuncionarios] = useState([
+    { nome: "João Silva", cargo: "Desenvolvedor", progresso: 70 },
+    { nome: "Maria Souza", cargo: "Analista", progresso: 40 },
+    { nome: "Carlos Lima", cargo: "Suporte", progresso: 90 }
+  ]);
 
-const [funcionarios, setFuncionarios] = useState([
-{
-nome: "João Silva",
-cargo: "Desenvolvedor",
-progresso: 70
-},
-{
-nome: "Maria Souza",
-cargo: "Analista",
-progresso: 40
-},
-{
-nome: "Carlos Lima",
-cargo: "Suporte",
-progresso: 90
-}
-])
+  const [novaTrilha, setNovaTrilha] = useState("");
+  const [trilhas, setTrilhas] = useState([
+    "React",
+    "Python",
+    "Segurança da Informação"
+  ]);
 
-const [novaTrilha, setNovaTrilha] = useState("")
-const [trilhas, setTrilhas] = useState([
-"React",
-"Python",
-"Segurança da Informação"
-])
+  const [novoFuncionario, setNovoFuncionario] = useState("");
 
-const adicionarTrilha = () => {
-if(novaTrilha !== ""){
-setTrilhas([...trilhas, novaTrilha])
-setNovaTrilha("")
-}
-}
+  const adicionarTrilha = () => {
+    if (novaTrilha !== "") {
+      setTrilhas([...trilhas, novaTrilha]);
+      setNovaTrilha("");
+    }
+  };
 
-const [novoFuncionario, setNovoFuncionario] = useState("")
-const adicionarFuncionario = () => {
+  const adicionarFuncionario = () => {
+    if (novoFuncionario !== "") {
+      setFuncionarios([
+        ...funcionarios,
+        { nome: novoFuncionario, cargo: "Novo", progresso: 0 }
+      ]);
+      setNovoFuncionario("");
+    }
+  };
 
-if(novoFuncionario !== ""){
-setFuncionarios([
-...funcionarios,
-{
-nome: novoFuncionario,
-cargo: "Novo",
-progresso: 0
-}
-])
+  const mediaProgresso = funcionarios.length > 0 
+    ? Math.round(funcionarios.reduce((acc, f) => acc + f.progresso, 0) / funcionarios.length) 
+    : 0;
 
-setNovoFuncionario("")
-}
+  return (
+    <div className="dashboard-container">
+      <h1 className="dashboard-title">Painel de Gestão (RH)</h1>
 
-}
+      {/* Resumo do Dashboard */}
+      <div className="card stats-row">
+        <div className="stat-item">
+          <h2>Total de Funcionários</h2>
+          <p className="stat-value">{funcionarios.length}</p>
+        </div>
+        <div className="stat-item">
+          <h2>Média de Progresso</h2>
+          <p className="stat-value">{mediaProgresso}%</p>
+        </div>
+      </div>
 
-return (
+      <div className="rh-grid">
+        {/* Lista de Funcionários */}
+        <div className="card">
+          <h2>Monitoramento de Equipe</h2>
+          <div className="funcionarios-lista">
+            {funcionarios.map((f, index) => (
+              <div key={index} className="funcionario-item">
+                <div className="info">
+                  <strong>{f.nome}</strong>
+                  <span>{f.cargo}</span>
+                </div>
+                <div className="progress-section">
+                  <span className="perc">{f.progresso}%</span>
+                  <div className="progress-bar-bg">
+                    <div 
+                      className="progress-bar-fill" 
+                      style={{ width: `${f.progresso}%` }}
+                    />
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
 
-<div style={styles.container}>
+        {/* Gerenciamento */}
+        <div className="management-column">
+          {/* Adicionar Funcionário */}
+          <div className="card">
+            <h2>Novo Colaborador</h2>
+            <div className="form-group">
+              <input
+                placeholder="Nome do funcionário"
+                value={novoFuncionario}
+                onChange={(e) => setNovoFuncionario(e.target.value)}
+              />
+              <button onClick={adicionarFuncionario} className="rh-button">
+                Adicionar
+              </button>
+            </div>
+          </div>
 
-<h1>Painel RH</h1>
-
-{/* Dashboard */}
-
-<div style={styles.card}>
-<h2>Dashboard Funcionários</h2>
-
-<p>Total Funcionários: {funcionarios.length}</p>
-
-<p>
-Média Progresso: {
-Math.round(
-funcionarios.reduce((acc, f) => acc + f.progresso, 0) 
-/ funcionarios.length
-)
-}%
-</p>
-
-</div>
-
-{/* Lista Funcionários */}
-
-<div style={styles.card}>
-<h2>Funcionários</h2>
-
-{funcionarios.map((f, index) => (
-
-<div key={index} style={styles.funcionario}>
-
-<div>
-<strong>{f.nome}</strong>
-<p>{f.cargo}</p>
-</div>
-
-<div>
-<p>{f.progresso}%</p>
-
-<div style={styles.barra}>
-<div 
-style={{
-...styles.progresso,
-width: `${f.progresso}%`
-}}
-/>
-
-</div>
-
-</div>
-
-</div>
-
-))}
-
-</div>
-
-{/* Adicionar Funcionário */}
-
-<div style={styles.card}>
-
-<h2>Adicionar Funcionário</h2>
-
-<input
-placeholder="Nome do funcionário"
-value={novoFuncionario}
-onChange={(e)=>setNovoFuncionario(e.target.value)}
-style={styles.input}
-/>
-
-<button onClick={adicionarFuncionario} style={styles.button}>
-Adicionar
-</button>
-
-</div>
-
-{/* Trilhas */}
-
-<div style={styles.card}>
-
-<h2>Trilhas de Aprendizado</h2>
-
-<ul>
-{trilhas.map((t, index)=>(
-<li key={index}>{t}</li>
-))}
-</ul>
-
-<input
-placeholder="Nova trilha"
-value={novaTrilha}
-onChange={(e)=>setNovaTrilha(e.target.value)}
-style={styles.input}
-/>
-
-<button onClick={adicionarTrilha} style={styles.button}>
-Adicionar Trilha
-</button>
-
-</div>
-
-</div>
-
-)
-
+          {/* Trilhas */}
+          <div className="card">
+            <h2>Trilhas Ativas</h2>
+            <ul className="trilhas-list-rh">
+              {trilhas.map((t, index) => (
+                <li key={index}>{t}</li>
+              ))}
+            </ul>
+            <div className="form-group">
+              <input
+                placeholder="Nova trilha"
+                value={novaTrilha}
+                onChange={(e) => setNovaTrilha(e.target.value)}
+              />
+              <button onClick={adicionarTrilha} className="rh-button">
+                Criar Trilha
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
 }
 
-const styles = {
-
-container:{
-padding:"20px",
-background:"#f5f5f5",
-minHeight:"100vh"
-},
-
-card:{
-background:"white",
-padding:"20px",
-marginBottom:"20px",
-borderRadius:"8px",
-boxShadow:"0 0 5px rgba(0,0,0,0.1)"
-},
-
-funcionario:{
-display:"flex",
-justifyContent:"space-between",
-marginBottom:"15px"
-},
-
-barra:{
-width:"150px",
-height:"10px",
-background:"#ddd",
-borderRadius:"5px"
-},
-
-progresso:{
-height:"10px",
-background:"#007bff",
-borderRadius:"5px"
-},
-
-input:{
-padding:"10px",
-marginTop:"10px",
-marginRight:"10px"
-},
-
-button:{
-padding:"10px",
-background:"#007bff",
-color:"white",
-border:"none",
-borderRadius:"5px",
-cursor:"pointer"
-}
-
-}
-
-export default RH
+export default RH;

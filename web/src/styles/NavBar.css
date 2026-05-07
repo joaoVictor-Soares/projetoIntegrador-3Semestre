@@ -1,34 +1,44 @@
 .navbar {
-    background: #343a40;
-    padding: 1rem 2rem;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  /* Usando o azul da sua imagem de referência para destacar o menu */
+  background: #85a5ff; 
+  padding: 1rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
 
 .navbar h1 {
-    color: white;
-    margin: 0;
-    font-size: 1.5rem;
+  color: #1a1b1e; 
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: bold;
 }
 
-.navbar ul {
-    list-style: none;
-    display: flex;
-    margin: 0;
-    padding: 0;
-    gap: 2rem;
+.navbar-links {
+  list-style: none;
+  display: flex;
+  margin: 0 auto;
+  padding: 0;
+  gap: 2rem;
 }
 
-.navbar li{
-    color: white;
-    text-decoration: none;
-    padding: 0.5rem 1rem;
-    border-radius: 5px;
-    transition: background-color 0.3s;
+.navbar-links li {
+  display: flex;
+  align-items: center;
 }
 
-.navbar li a:hover {
-    background: rgba(255, 255, 255, 0.1);
+.navbar-links li a {
+  color: #ffffff;
+  text-decoration: none;
+  font-size: 1.1rem;
+  font-weight: bold;
+  padding: 0.5rem 1rem;
+  border-radius: 5px;
+  transition: all 0.3s ease;
+}
+
+.navbar-links li a:hover {
+  background: rgba(43, 45, 49, 0.2);
+  color: #1a1b1e;
 }
