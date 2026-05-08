@@ -1,77 +1,76 @@
-import React, { useState } from "react";
+import React from 'react';
 import '../styles/RH.css';
 
-function RH() {
-  const [funcionarios, setFuncionarios] = useState([
-    { nome: "João Silva", cargo: "Desenvolvedor", progresso: 70 },
-    { nome: "Maria Souza", cargo: "Analista", progresso: 40 },
-    { nome: "Carlos Lima", cargo: "Suporte", progresso: 90 }
-  ]);
+// Recebemos o 'progressoFuncionario' como prop vinda do App.js
+function RH({ progressoFuncionario }) {
+  
+  // Lista de funcionários estáticos (exemplo)
+  const equipe = [
+    { id: 1, nome: "João Silva", cargo: "Desenvolvedor", progresso: 70 },
+    { id: 2, nome: "Maria Souza", cargo: "Analista", progresso: 40 },
+    { id: 3, nome: "Carlos Lima", cargo: "Suporte", progresso: 90 },
+  ];
 
-  const [novaTrilha, setNovaTrilha] = useState("");
-  const [trilhas, setTrilhas] = useState([
-    "React",
-    "Python",
-    "Segurança da Informação"
-  ]);
-
-  const [novoFuncionario, setNovoFuncionario] = useState("");
-
-  const adicionarTrilha = () => {
-    if (novaTrilha !== "") {
-      setTrilhas([...trilhas, novaTrilha]);
-      setNovaTrilha("");
-    }
-  };
-
-  const adicionarFuncionario = () => {
-    if (novoFuncionario !== "") {
-      setFuncionarios([
-        ...funcionarios,
-        { nome: novoFuncionario, cargo: "Novo", progresso: 0 }
-      ]);
-      setNovoFuncionario("");
-    }
-  };
-
-  const mediaProgresso = funcionarios.length > 0 
-    ? Math.round(funcionarios.reduce((acc, f) => acc + f.progresso, 0) / funcionarios.length) 
-    : 0;
+  // Calculamos a média simples incluindo o teu progresso atual
+  const totalFuncionarios = equipe.length + 1;
+  const somaProgresso = equipe.reduce((acc, func) => acc + func.progresso, 0) + Number(progressoFuncionario);
+  const mediaProgresso = Math.round(somaProgresso / totalFuncionarios);
 
   return (
-    <div className="dashboard-container">
-      <h1 className="dashboard-title">Painel de Gestão (RH)</h1>
-
-      {/* Resumo do Dashboard */}
-      <div className="card stats-row">
-        <div className="stat-item">
-          <h2>Total de Funcionários</h2>
-          <p className="stat-value">{funcionarios.length}</p>
+    <div className="rh-container">
+      <h1 className="rh-title">Painel de Gestão (RH)</h1>
+      
+      {/* Cartões de Estatísticas */}
+      <div className="stats-grid">
+        <div className="stat-card">
+          <h3>Total de Funcionários</h3>
+          <p className="stat-number">{totalFuncionarios}</p>
         </div>
-        <div className="stat-item">
-          <h2>Média de Progresso</h2>
-          <p className="stat-value">{mediaProgresso}%</p>
+        <div className="stat-card">
+          <h3>Média de Progresso</h3>
+          <p className="stat-number">{mediaProgresso}%</p>
         </div>
       </div>
 
-      <div className="rh-grid">
-        {/* Lista de Funcionários */}
-        <div className="card">
-          <h2>Monitoramento de Equipe</h2>
-          <div className="funcionarios-lista">
-            {funcionarios.map((f, index) => (
-              <div key={index} className="funcionario-item">
-                <div className="info">
-                  <strong>{f.nome}</strong>
-                  <span>{f.cargo}</span>
+      <div className="rh-content-grid">
+        
+        {/* Coluna da Esquerda: Monitoramento */}
+        <div className="monitoramento-section">
+          <h3>Monitoramento de Equipe</h3>
+          
+          <div className="lista-equipe">
+            
+            {/* O TEU PERFIL (Conectado ao Slider do Perfil) */}
+            <div className="funcionario-item">
+              <div className="func-info">
+                <strong>Breno Dolcinotti</strong>
+                <span>Desenvolvedor Full Stack</span>
+              </div>
+              <div className="barra-progresso-container">
+                <span className="porcentagem-texto">{progressoFuncionario}%</span>
+                <div className="barra-fundo">
+                  <div 
+                    className="barra-preenchimento" 
+                    style={{ width: `${progressoFuncionario}%` }}
+                  ></div>
                 </div>
-                <div className="progress-section">
-                  <span className="perc">{f.progresso}%</span>
-                  <div className="progress-bar-bg">
+              </div>
+            </div>
+
+            {/* Restante da Equipe */}
+            {equipe.map(func => (
+              <div key={func.id} className="funcionario-item">
+                <div className="func-info">
+                  <strong>{func.nome}</strong>
+                  <span>{func.cargo}</span>
+                </div>
+                <div className="barra-progresso-container">
+                  <span className="porcentagem-texto">{func.progresso}%</span>
+                  <div className="barra-fundo">
                     <div 
-                      className="progress-bar-fill" 
-                      style={{ width: `${f.progresso}%` }}
-                    />
+                      className="barra-preenchimento" 
+                      style={{ width: `${func.progresso}%` }}
+                    ></div>
                   </div>
                 </div>
               </div>
@@ -79,43 +78,28 @@ function RH() {
           </div>
         </div>
 
-        {/* Gerenciamento */}
-        <div className="management-column">
-          {/* Adicionar Funcionário */}
-          <div className="card">
-            <h2>Novo Colaborador</h2>
-            <div className="form-group">
-              <input
-                placeholder="Nome do funcionário"
-                value={novoFuncionario}
-                onChange={(e) => setNovoFuncionario(e.target.value)}
-              />
-              <button onClick={adicionarFuncionario} className="rh-button">
-                Adicionar
-              </button>
+        {/* Coluna da Direita: Ações e Info */}
+        <div className="acoes-rh">
+          
+          <div className="card-rh">
+            <h3>Novo Colaborador</h3>
+            <div className="form-rh">
+              <input type="text" placeholder="Nome do funcionário" className="input-rh" />
+              <button className="btn-rh">Adicionar</button>
             </div>
           </div>
 
-          {/* Trilhas */}
-          <div className="card">
-            <h2>Trilhas Ativas</h2>
-            <ul className="trilhas-list-rh">
-              {trilhas.map((t, index) => (
-                <li key={index}>{t}</li>
-              ))}
+          <div className="card-rh">
+            <h3>Trilhas Ativas</h3>
+            <ul className="lista-trilhas">
+              <li>Microsoft Azure Fundamentals</li>
+              <li>React Native Advanced</li>
+              <li>Lógica de Programação</li>
             </ul>
-            <div className="form-group">
-              <input
-                placeholder="Nova trilha"
-                value={novaTrilha}
-                onChange={(e) => setNovaTrilha(e.target.value)}
-              />
-              <button onClick={adicionarTrilha} className="rh-button">
-                Criar Trilha
-              </button>
-            </div>
           </div>
+
         </div>
+
       </div>
     </div>
   );

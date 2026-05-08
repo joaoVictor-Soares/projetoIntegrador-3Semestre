@@ -1,12 +1,10 @@
-/* src/styles/App.css */
-
 :root {
-  --bg-color: #2b2d31; /* Grafite escuro do fundo */
-  --primary-blue: #85a5ff; /* Azul claro para títulos e botões */
-  --input-bg: #e8e8e8; /* Fundo claro para os inputs igual sua imagem */
-  --text-color-white: #ffffff; /* Texto branco */
-  --placeholder-color: #969696; /* Placeholder cinza */
-  --button-text-color: #1a1b1e; /* Texto do botão escuro */
+  --bg-color: #2b2d31;
+  --primary-blue: #85a5ff;
+  --input-bg: #e8e8e8;
+  --text-color-white: #ffffff;
+  --placeholder-color: #969696;
+  --button-text-color: #1a1b1e;
 }
 
 body {
@@ -14,15 +12,8 @@ body {
   background-color: var(--bg-color);
   color: var(--text-color-white);
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-  
-  /* Centralização para deixar o Login no meio da tela */
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
 }
 
-/* Reset básico para inputs */
 input {
   outline: none;
 }

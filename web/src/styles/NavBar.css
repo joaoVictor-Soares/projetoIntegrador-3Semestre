@@ -1,26 +1,22 @@
 .navbar {
-  /* Usando o azul da sua imagem de referência para destacar o menu */
-  background: #85a5ff; 
-  padding: 1rem 2rem;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-}
-
-.navbar h1 {
-  color: #1a1b1e; 
+  background-color: #85a5ff;
+  width: 100%;
   margin: 0;
-  font-size: 1.5rem;
-  font-weight: bold;
+  padding: 1.2rem 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+  box-sizing: border-box;
+  position: relative;
 }
 
 .navbar-links {
   list-style: none;
   display: flex;
-  margin: 0 auto;
+  margin: 0;
   padding: 0;
-  gap: 2rem;
+  gap: 4rem; /* Esse é o segredo do espaçamento: define uma distância exata e igual entre todas as abas */
 }
 
 .navbar-links li {
@@ -29,16 +25,58 @@
 }
 
 .navbar-links li a {
-  color: #ffffff;
+  color: #ffffff; /* Texto branco */
   text-decoration: none;
   font-size: 1.1rem;
   font-weight: bold;
   padding: 0.5rem 1rem;
-  border-radius: 5px;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+  white-space: nowrap; /* Impede que o nome da aba quebre em duas linhas */
+}
+
+/* Efeito quando passa o mouse por cima */
+.navbar-links li a:hover {
+  background-color: rgba(43, 45, 49, 0.2); /* Fundo sutilmente mais escuro */
+  color: #1a1b1e; /* Texto fica escuro para dar contraste */
+}
+
+/* --- BOTÃO VOLTAR PARA O LOGIN --- */
+.btn-voltar-login {
+  position: absolute;
+  right: 30px; /* Distância do canto direito da tela */
+  
+  background-color: transparent;
+  color: #ffffff; /* Texto branco */
+  border: 2px solid #ffffff; /* Contorno branco */
+  border-radius: 8px;
+  padding: 8px 16px;
+  font-size: 0.9rem;
+  font-weight: bold;
+  cursor: pointer;
   transition: all 0.3s ease;
 }
 
-.navbar-links li a:hover {
-  background: rgba(43, 45, 49, 0.2);
-  color: #1a1b1e;
+/* Efeito ao passar o mouse */
+.btn-voltar-login:hover {
+  background-color: #ffffff; /* Fundo fica branco */
+  color: #85a5ff; /* O texto fica azul para dar contraste */
+  transform: scale(1.05); /* Dá uma leve crescida */
 }
+
+/* --- TAG ADMINISTRADOR (CANTO ESQUERDO) --- */
+.admin-tag {
+  position: absolute;
+  left: 30px; /* Mesma distância que o botão da direita para manter simetria */
+  
+  color: #ffffff;
+  font-size: 0.9rem;
+  font-weight: bold;
+  text-transform: uppercase; /* Deixa em caixa alta para dar um ar mais oficial */
+  letter-spacing: 1px;
+  background-color: rgba(0, 0, 0, 0.2); /* Um fundo sutil para destacar */
+  padding: 5px 12px;
+  border-radius: 4px;
+  pointer-events: none; /* Garante que o texto não seja clicável */
+}
+

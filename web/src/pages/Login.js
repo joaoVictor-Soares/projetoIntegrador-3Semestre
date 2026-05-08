@@ -1,22 +1,27 @@
-// src/pages/Login.js
-
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import '../styles/Login.css'; 
 
-function Login() {
+//O Login agora recebe a função setUserRole como "prop"
+function Login({ setUserRole }) {
   const navigate = useNavigate();
   
-  // Mudamos o nome do estado de 'email' para 'registro'
   const [registro, setRegistro] = useState("");
   const [senha, setSenha] = useState("");
 
   const handleLogin = (e) => {
     e.preventDefault();
+
+    // Lógica de verificação do Administrador
+    if (registro === "123456" && senha === "adm123456") {
+      setUserRole("admin"); // Avisa o App.js que é um gestor
+    } else {
+      setUserRole("user");  // Avisa o App.js que é um funcionário comum
+    }
+
     navigate("/home");
   };
 
-  // Esta função pega o que o usuário digitou e apaga tudo que NÃO for número
   const handleRegistroChange = (e) => {
     const apenasNumeros = e.target.value.replace(/\D/g, '');
     setRegistro(apenasNumeros);
@@ -34,14 +39,14 @@ function Login() {
             Digite seu número de registro:
           </label>
           <input
-            type="text" /* Mudamos de email para text */
+            type="text"
             id="registro"
             className="form-input"
-            placeholder="Apenas números" /* Novo placeholder */
+            placeholder="Apenas números"
             value={registro}
-            onChange={handleRegistroChange} /* Chama a nossa função bloqueadora de letras */
+            onChange={handleRegistroChange}
             required
-            maxLength={8} /* Opcional: limita a quantidade máxima de números */
+            maxLength={8}
           />
         </div>
 

@@ -1,121 +1,204 @@
-.dashboard-container {
+/* src/styles/Funcionario.css */
+
+.funcionario-container {
   padding: 40px 20px;
   max-width: 1000px;
   margin: 0 auto;
-  background-color: #2b2d31;
-  min-height: 100vh;
   color: #ffffff;
 }
 
-.dashboard-title {
+.funcionario-title {
   color: #85a5ff;
-  margin-bottom: 30px;
   border-bottom: 2px solid #3f4147;
   padding-bottom: 15px;
+  margin-bottom: 30px;
 }
 
-.section-title {
-  margin: 30px 0 20px 0;
+.section-subtitle {
   color: #85a5ff;
+  margin: 40px 0 20px 0;
 }
 
-.card {
+/* Cartões Base */
+.card-section {
   background-color: #36393f;
-  padding: 25px;
-  margin-bottom: 20px;
+  padding: 30px;
   border-radius: 12px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+  margin-bottom: 30px;
 }
 
-.card h2 {
-  font-size: 1.3rem;
-  margin-bottom: 15px;
-  color: #ffffff;
+/* 1. Perfil */
+.perfil-card {
+  display: flex;
+  align-items: center;
+  gap: 25px;
 }
 
-.card h3 {
-  font-size: 1.1rem;
-  margin-bottom: 15px;
-  color: #85a5ff;
-}
-
-.user-info p {
-  margin-bottom: 8px;
-  font-size: 1.1rem;
-}
-
-.user-info strong {
-  color: #85a5ff;
-}
-
-.trilhas-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 20px;
-}
-
-/* Estilos da Barra de Progresso */
-.progress-container {
-  margin-bottom: 20px;
-}
-
-.progress-container p {
-  margin-bottom: 8px;
+.perfil-avatar {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background-color: #85a5ff;
+  color: #1a1b1e;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 2rem;
   font-weight: bold;
 }
 
-.progress-bar-bg {
-  width: 100%;
-  height: 10px;
+.perfil-dados h2 {
+  margin: 0 0 10px 0;
+  color: #ffffff;
+}
+
+.perfil-dados p {
+  margin: 5px 0;
+  color: #b9bbbe;
+  font-size: 0.95rem;
+}
+
+/* 2. Trilhas e Slider */
+.trilhas-section h2 {
+  margin-top: 0;
+  color: #ffffff;
+  font-size: 1.4rem;
+  margin-bottom: 20px;
+}
+
+.trilha-ativa-container {
   background-color: #2b2d31;
-  border-radius: 5px;
-  overflow: hidden;
+  padding: 20px;
+  border-radius: 8px;
+  border-left: 4px solid #85a5ff;
 }
 
-.progress-bar-fill {
-  height: 100%;
-  background-color: #85a5ff;
-  transition: width 0.3s ease;
+.trilha-ativa-container h3 {
+  margin: 0 0 5px 0;
+  color: #85a5ff;
 }
 
-/* Estilos dos Checkboxes */
-.modulos-list {
+.trilha-desc {
+  color: #969696;
+  font-size: 0.9rem;
+  margin-bottom: 20px;
+}
+
+.slider-container {
   display: flex;
   flex-direction: column;
   gap: 12px;
+  margin-bottom: 25px;
 }
 
-.checkbox-label {
-  display: flex;
-  align-items: center;
-  gap: 10px;
+.slider-container label {
   font-size: 1rem;
+}
+
+.slider-container strong {
+  color: #85a5ff;
+  font-size: 1.2rem;
+}
+
+.range-slider {
+  -webkit-appearance: none;
+  width: 100%;
+  height: 8px;
+  border-radius: 5px;
+  background: #4a4d53;
+  outline: none;
   cursor: pointer;
 }
 
-.checkbox-label input[type="checkbox"] {
-  width: 18px;
-  height: 18px;
+.range-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: #85a5ff;
   cursor: pointer;
-  accent-color: #85a5ff; /* Muda a cor do checkbox nativo se suportado */
+  transition: transform 0.2s;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.5);
 }
 
-.concluido {
-  text-decoration: line-through;
-  color: #888;
+.range-slider::-webkit-slider-thumb:hover {
+  transform: scale(1.15);
 }
 
-/* Lista de novos cursos */
-.cursos-list {
-  list-style-type: none;
-  padding-left: 0;
+.btn-salvar-progresso {
+  background-color: transparent;
+  color: #85a5ff;
+  border: 2px solid #85a5ff;
+  border-radius: 8px;
+  padding: 10px 25px;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.2s ease;
 }
 
-.cursos-list li {
-  padding: 10px 0;
-  border-bottom: 1px solid #4a4d53;
+.btn-salvar-progresso:hover {
+  background-color: #85a5ff;
+  color: #1a1b1e;
 }
 
-.cursos-list li:last-child {
-  border-bottom: none;
+/* 3. Novos Cursos */
+.cursos-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+}
+
+.curso-novo-card {
+  background-color: #36393f;
+  padding: 25px;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.2s ease;
+}
+
+.curso-novo-card:hover {
+  transform: translateY(-5px);
+  border-bottom: 3px solid #85a5ff;
+}
+
+.curso-novo-card h4 {
+  color: #ffffff;
+  margin: 0 0 10px 0;
+  font-size: 1.1rem;
+}
+
+.curso-info {
+  color: #b9bbbe;
+  font-size: 0.9rem;
+  line-height: 1.4;
+  flex-grow: 1; /* Empurra o botão e a carga para o fundo */
+}
+
+.curso-carga {
+  display: block;
+  font-size: 0.85rem;
+  color: #85a5ff;
+  margin-bottom: 15px;
+  font-weight: bold;
+}
+
+.btn-inscrever {
+  background-color: #85a5ff;
+  color: #1a1b1e;
+  border: none;
+  border-radius: 6px;
+  padding: 10px;
+  font-weight: bold;
+  cursor: pointer;
+  width: 100%;
+  transition: opacity 0.2s;
+}
+
+.btn-inscrever:hover {
+  opacity: 0.9;
 }

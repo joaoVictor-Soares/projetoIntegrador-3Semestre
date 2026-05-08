@@ -1,59 +1,70 @@
-.home-container {
-  min-height: 100vh;
-  background-color: #2b2d31;
-  color: #ffffff;
-}
+/* src/styles/Home.css */
 
-.home-content {
-  padding: 60px 20px;
-  max-width: 800px;
-  margin: 0 auto;
+.home-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  
+  /* 1. Trocamos o 'center' (que forçava no meio) por 'flex-start' (que joga pro topo) */
+  justify-content: flex-start; 
+  
+  /* 2. Adicionamos um empurrãozinho do topo para baixo. 
+     15vh significa 15% do tamanho da sua tela. */
+  padding-top: 15vh; 
+  
+  min-height: calc(100vh - 80px); 
   text-align: center;
+  box-sizing: border-box; /* Garante que o padding não crie barra de rolagem */
 }
 
 .home-title {
-  color: #85a5ff;
-  font-size: 3.5rem;
-  margin-bottom: 20px;
-  letter-spacing: 1px;
+  color: #85a5ff; /* O azul da plataforma */
+  font-size: 4rem;
+  margin-bottom: 15px;
+  font-weight: bold;
 }
 
 .home-subtitle {
+  color: #ffffff;
   font-size: 1.2rem;
-  line-height: 1.6;
   margin-bottom: 40px;
-  color: #d1d1d1;
 }
 
-.search-bar {
+.search-container {
   display: flex;
-  gap: 10px;
-  max-width: 600px;
-  margin: 0 auto;
+  gap: 15px; /* Espaço entre a barra e o botão */
+  justify-content: center;
+  width: 100%;
+  max-width: 650px;
 }
 
-.search-bar input {
-  flex: 1;
+.search-input {
+  flex-grow: 1; /* Faz a barra esticar para preencher o espaço */
   padding: 15px 20px;
-  border-radius: 8px;
-  border: none;
   font-size: 1rem;
+  border: none;
+  border-radius: 8px;
   background-color: #e8e8e8;
-  color: #333;
+  color: #1a1b1e;
 }
 
-.search-bar button {
-  padding: 15px 30px;
+.search-input::placeholder {
+  color: #969696;
+}
+
+.search-button {
+  padding: 15px 40px;
+  font-size: 1.1rem;
+  font-weight: bold;
+  border: none;
+  border-radius: 8px;
   background-color: #85a5ff;
   color: #1a1b1e;
-  border: none;
-  border-radius: 8px;
-  font-weight: bold;
-  font-size: 1rem;
   cursor: pointer;
-  transition: opacity 0.2s;
+  transition: all 0.3s ease;
 }
 
-.search-bar button:hover {
-  opacity: 0.9;
+.search-button:hover {
+  background-color: #6b8ce6;
+  transform: translateY(-2px); /* Efeito de botão clicável */
 }

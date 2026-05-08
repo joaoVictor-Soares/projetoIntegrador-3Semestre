@@ -1,21 +1,26 @@
 import React from 'react';
-import NavBar from '../navbar/NavBar';
-import '../styles/Home.css';
+import '../styles/Home.css'; 
 
 function Home() {
   return (
-    <div className="home-container">
-      <NavBar />
-      <main className="home-content">
+    <div className="home-wrapper">
+      <div className="home-content">
+        
         <h1 className="home-title">Bem Vindo!</h1>
-        <p className="home-subtitle">
-          Pesquise o curso desejado da Microsoft para realizar!
-        </p>
-        <div className="search-bar">
-          <input type="text" placeholder="Buscar cursos..." />
-          <button>Buscar</button>
+        <p className="home-subtitle">Pesquise o curso desejado da Microsoft para realizar!</p>
+        
+        <div className="search-container">
+          <input 
+            type="text" 
+            className="search-input" 
+            placeholder="Buscar cursos..." 
+          />
+          <button className="search-button">
+            Buscar
+          </button>
         </div>
-      </main>
+
+      </div>
     </div>
   );
 }
