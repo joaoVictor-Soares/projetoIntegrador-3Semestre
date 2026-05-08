@@ -5,7 +5,7 @@ import Home from './components/Home';
 import Funcionario from './pages/Funcionario';
 import RH from './pages/RH';
 import NavBar from './navbar/NavBar';
-import './index.css';
+import './styles/App.css'; 
 
 function App() {
   return (

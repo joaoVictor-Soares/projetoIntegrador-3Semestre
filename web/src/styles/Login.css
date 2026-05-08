@@ -1,11 +1,75 @@
-.login-select {
-  padding: 12px 15px;
-  border-radius: 8px;
-  border: none;
-  background-color: #e8e8e8;
-  color: #333;
-  font-size: 1rem;
+/* src/styles/Login.css */
+
+.login-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   width: 100%;
+  max-width: 450px; /* Largura máxima para não ficar muito largo no desktop */
+  padding: 2rem;
+  box-sizing: border-box;
+}
+
+.login-logo {
+  color: var(--primary-blue);
+  font-size: 4rem; /* Fonte grande e chamativa */
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.login-welcome {
+  color: var(--text-color-white);
+  font-size: 1.5rem;
+  text-align: center;
+  margin-bottom: 2.5rem;
+}
+
+.form-group {
+  width: 100%;
+  margin-bottom: 1.5rem;
+}
+
+.form-label {
+  color: var(--text-color-white);
+  font-size: 1rem;
+  text-align: left;
+  margin-bottom: 0.5rem;
+  display: block;
+}
+
+.form-input {
+  width: 100%;
+  background-color: var(--input-bg);
+  border: none;
+  border-radius: 8px; /* Bordas arredondadas suaves */
+  padding: 1rem;
+  font-size: 1rem;
+  box-sizing: border-box; /* Inclui padding na largura total */
+  color: var(--button-text-color); /* Texto digitado deve ser escuro */
+}
+
+.form-input::placeholder {
+  color: var(--placeholder-color);
+}
+
+.button-container {
+  text-align: center;
+  margin-top: 2rem;
+}
+
+.login-button {
+  background-color: var(--primary-blue);
+  color: var(--button-text-color);
+  border: none;
+  border-radius: 12px; /* Botão mais arredondado */
+  padding: 0.75rem 2.5rem;
+  font-size: 1.1rem;
+  font-weight: bold;
   cursor: pointer;
-  outline: none;
+  transition: opacity 0.2s; /* Efeito suave no hover */
+}
+
+.login-button:hover {
+  opacity: 0.9; /* Fica ligeiramente transparente no hover */
 }
