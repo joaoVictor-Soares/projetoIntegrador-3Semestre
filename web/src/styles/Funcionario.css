@@ -231,3 +231,135 @@
   background-color: #85a5ff;
   color: #1a1b1e;
 }
+
+/* --- CABEÇALHO DO PERFIL --- */
+.perfil-header-title {
+  color: #85a5ff;
+  font-size: 2rem;
+  margin-bottom: 5px;
+}
+
+.perfil-registro {
+  color: #ffffff;
+  font-size: 1.1rem;
+  margin-top: 0;
+  margin-bottom: 20px;
+}
+
+.perfil-dados-extra {
+  background-color: #36393f;
+  padding: 20px;
+  border-radius: 12px;
+  margin-bottom: 40px;
+}
+
+/* --- CURSOS EM ANDAMENTO (IDÊNTICO À FOTO) --- */
+.cursos-titulo {
+  color: #85a5ff;
+  font-size: 1.8rem;
+  margin-bottom: 20px;
+}
+
+.form-adicionar-curso {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin-bottom: 30px; /* Dá o espaço entre o botão OK e os cursos que vão aparecer abaixo */
+}
+
+.btn-abrir-adicionar {
+  background-color: #85a5ff;
+  color: #ffffff;
+  border: none;
+  border-radius: 10px;
+  padding: 15px;
+  font-size: 1.1rem;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.input-nome-curso {
+  background-color: #ffffff;
+  color: #1a1b1e;
+  border: none;
+  border-radius: 10px;
+  padding: 18px 15px;
+  font-size: 1rem;
+}
+
+.input-nome-curso::placeholder {
+  color: #969696;
+}
+
+.btn-ok-adicionar {
+  background-color: #85a5ff;
+  color: #ffffff;
+  border: none;
+  border-radius: 10px;
+  padding: 15px;
+  font-size: 1.1rem;
+  font-weight: bold;
+  cursor: pointer;
+  text-transform: uppercase;
+}
+
+/* --- CARTÕES DOS CURSOS ADICIONADOS --- */
+.lista-cursos-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.curso-card-individual {
+  background-color: #36393f;
+  border-radius: 12px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.curso-card-individual h3 {
+  color: #ffffff;
+  margin: 0;
+  font-size: 1.3rem;
+}
+
+.curso-porcentagem {
+  color: #85a5ff;
+  font-size: 1rem;
+}
+
+/* O Slider idêntico ao da foto */
+.range-slider-curso {
+  -webkit-appearance: none;
+  width: 100%;
+  height: 6px;
+  border-radius: 5px;
+  background: #4a4d53;
+  outline: none;
+  margin: 10px 0;
+}
+
+.range-slider-curso::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 25px;
+  height: 25px;
+  border-radius: 10px; /* Bordas arredondadas como na foto */
+  background: #85a5ff;
+  cursor: pointer;
+}
+
+.btn-ok-progresso {
+  background-color: #85a5ff;
+  color: #ffffff;
+  border: none;
+  border-radius: 10px;
+  padding: 12px;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  text-transform: uppercase;
+  margin-top: 10px;
+}

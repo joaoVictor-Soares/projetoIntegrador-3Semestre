@@ -1,73 +1,117 @@
 import React, { useState } from 'react';
 import '../styles/Funcionario.css';
 
-function Funcionario({ progresso, setProgresso }) {
-  const [progressoBarra, setProgressoBarra] = useState(progresso);
-  
-  // NOVO: Estado para controlar se a senha aparece ou fica escondida nas bolinhas
+function Funcionario({ setProgresso }) {
   const [mostrarSenha, setMostrarSenha] = useState(false);
 
-  const handleSalvarProgresso = () => {
-    setProgresso(progressoBarra);
-    alert(`Progresso guardado em ${progressoBarra}%! O painel de Gestão (RH) já foi atualizado.`);
+  const [cursosEmAndamento, setCursosEmAndamento] = useState([]);
+  
+  // AQUI FOI A MUDANÇA: Começa como 'false' para esconder o campo e o botão OK no início
+  const [mostrarFormulario, setMostrarFormulario] = useState(false); 
+  const [nomeNovoCurso, setNomeNovoCurso] = useState("");
+
+  const handleAdicionarCurso = () => {
+    if (nomeNovoCurso.trim() !== "") {
+      const novoCurso = {
+        id: Date.now(),
+        nome: nomeNovoCurso,
+        progresso: 0 
+      };
+      setCursosEmAndamento([...cursosEmAndamento, novoCurso]);
+      setNomeNovoCurso(""); 
+      // Opcional: Se quiser que o campo feche de novo após adicionar o curso, descomente a linha abaixo:
+      // setMostrarFormulario(false); 
+    }
+  };
+
+  const handleProgressoChange = (id, novoValor) => {
+    const cursosAtualizados = cursosEmAndamento.map(curso => 
+      curso.id === id ? { ...curso, progresso: novoValor } : curso
+    );
+    setCursosEmAndamento(cursosAtualizados);
+  };
+
+  const handleSalvarProgresso = (curso) => {
+    if (setProgresso) setProgresso(curso.progresso); 
+    alert(`Progresso do curso "${curso.nome}" salvo em ${curso.progresso}%!`);
   };
 
   return (
     <div className="funcionario-container">
-      <h1 className="funcionario-title">Área do Colaborador</h1>
-
       {/* 1. ÁREA DO PERFIL */}
-      <div className="card-section perfil-card">
-        <div className="perfil-avatar">BD</div>
-        <div className="perfil-dados">
-          <h2>Breno Dolcinotti</h2>
-          
-          {/* NOVO: Número de Registo abaixo do nome */}
-          <p><strong>Registro:</strong> 123456</p>
-          
-          <p><strong>Cargo:</strong> Desenvolvedor de Sistemas</p>
-          <p><strong>Departamento:</strong> Tecnologia da Informação (TI)</p>
-          
-          {/* NOVO: Senha escondida com botão interativo abaixo do departamento */}
-          <div className="senha-linha">
-            <p><strong>Senha:</strong> {mostrarSenha ? "adm123456" : "••••••••"}</p>
-            <button 
-              className="btn-mostrar-senha" 
-              onClick={() => setMostrarSenha(!mostrarSenha)}
-            >
-              {mostrarSenha ? "Ocultar" : "Mostrar"}
-            </button>
-          </div>
-
-        </div>
-      </div>
-
-      {/* 2. SUAS TRILHAS DE APRENDIZADO */}
-      <div className="card-section trilhas-section">
-        <h2>Suas Trilhas de Aprendizado Ativas</h2>
-        
-        <div className="trilha-ativa-container">
-          <h3>Desenvolvimento Full Stack com React</h3>
-          <p className="trilha-desc">Módulo atual: Integração de APIs e Gestão de Estado</p>
-          
-          <div className="slider-container">
-            <label>O seu avanço no curso: <strong>{progressoBarra}%</strong></label>
-            <input 
-              type="range" 
-              min="0" 
-              max="100" 
-              value={progressoBarra} 
-              onChange={(e) => setProgressoBarra(e.target.value)}
-              className="range-slider"
-            />
-          </div>
-
-          <button className="btn-salvar-progresso" onClick={handleSalvarProgresso}>
-            Salvar Progresso
+      <h1 className="perfil-header-title">Funcionário: Breno Dolcinotti</h1>
+      <p className="perfil-registro">Número de Registro: 123456</p>
+      
+      <div className="perfil-dados-extra">
+        <p><strong>Cargo:</strong> Desenvolvedor de Sistemas</p>
+        <p><strong>Departamento:</strong> Tecnologia da Informação (TI)</p>
+        <div className="senha-linha">
+          <p><strong>Senha:</strong> {mostrarSenha ? "adm123456" : "••••••••"}</p>
+          <button 
+            className="btn-mostrar-senha" 
+            onClick={() => setMostrarSenha(!mostrarSenha)}
+          >
+            {mostrarSenha ? "Ocultar" : "Mostrar"}
           </button>
         </div>
       </div>
-      
+
+      {/* 2. CURSOS EM ANDAMENTO */}
+      <div className="cursos-andamento-section">
+        <h2 className="cursos-titulo">Cursos em andamento</h2>
+
+        <div className="form-adicionar-curso">
+          <button 
+            className="btn-abrir-adicionar"
+            // Ao clicar, inverte o estado: se está fechado, abre. Se está aberto, fecha.
+            onClick={() => setMostrarFormulario(!mostrarFormulario)}
+          >
+            + Adicionar Curso
+          </button>
+
+          {/* O campo de input e o botão OK só aparecem se 'mostrarFormulario' for true */}
+          {mostrarFormulario && (
+            <>
+              <input 
+                type="text" 
+                placeholder="Nome do curso" 
+                value={nomeNovoCurso}
+                onChange={(e) => setNomeNovoCurso(e.target.value)}
+                className="input-nome-curso"
+              />
+              <button className="btn-ok-adicionar" onClick={handleAdicionarCurso}>
+                OK
+              </button>
+            </>
+          )}
+        </div>
+
+        <div className="lista-cursos-cards">
+          {cursosEmAndamento.map((curso) => (
+            <div key={curso.id} className="curso-card-individual">
+              <h3>{curso.nome}</h3>
+              <span className="curso-porcentagem">{curso.progresso}%</span>
+              
+              <input 
+                type="range" 
+                min="0" 
+                max="100" 
+                value={curso.progresso} 
+                onChange={(e) => handleProgressoChange(curso.id, e.target.value)}
+                className="range-slider-curso"
+              />
+              
+              <button 
+                className="btn-ok-progresso" 
+                onClick={() => handleSalvarProgresso(curso)}
+              >
+                OK
+              </button>
+            </div>
+          ))}
+        </div>
+
+      </div>
     </div>
   );
 }

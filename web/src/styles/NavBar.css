@@ -80,3 +80,26 @@
   pointer-events: none; /* Garante que o texto não seja clicável */
 }
 
+/* --- ESTILOS DOS LINKS DO MENU --- */
+
+.navbar-links a {
+  text-decoration: none;
+  color: #ffffff;
+  font-size: 1.1rem;
+  padding: 8px 16px; /* Dá um espaço interno para o fundo azul ficar bonito */
+  border-radius: 8px; /* Cantos arredondados */
+  transition: all 0.2s ease;
+}
+
+/* Efeito ao passar o rato por cima de uma aba solta */
+.navbar-links a:hover {
+  background-color: rgba(133, 165, 255, 0.15);
+  color: #85a5ff;
+}
+
+/* O EFEITO DA ABA SELECIONADA (Graças ao NavLink) */
+.navbar-links a.active {
+  background-color: #85a5ff; /* Fundo azul preenchido */
+  color: #1a1b1e; /* Texto escuro para dar contraste */
+  font-weight: bold;
+}

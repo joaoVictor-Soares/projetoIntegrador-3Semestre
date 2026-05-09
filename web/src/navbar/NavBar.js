@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom'; // Trocamos Link por NavLink
 import '../styles/NavBar.css'; 
 
 function NavBar({ userRole }) {
@@ -11,34 +11,32 @@ function NavBar({ userRole }) {
 
   return (
     <nav className="navbar">
-      {/* Texto que aparece apenas para o administrador no canto esquerdo */}
       {userRole === "admin" && (
         <span className="admin-tag">Administrador</span>
       )}
 
       <ul className="navbar-links">
         
-        {/* NOVO: Estas abas AGORA só aparecem se o utilizador for "user" (Funcionário normal) */}
+        {/* Usamos NavLink no lugar de Link */}
         {userRole === "user" && (
           <>
-            <li><Link to="/funcionario">Meu Perfil</Link></li>
-            <li><Link to="/home">Home</Link></li>
-            <li><Link to="/certificados">Certificados</Link></li>
+            <li><NavLink to="/funcionario">Meu Perfil</NavLink></li>
+            <li><NavLink to="/home">Home</NavLink></li>
+            <li><NavLink to="/certificados">Certificados</NavLink></li>
           </>
         )}
         
-        {/* Estas abas só aparecem se o utilizador for "admin" */}
         {userRole === "admin" && (
           <>
-            <li><Link to="/rh">Gestão de Funcionários</Link></li>
-            <li><Link to="/novo-colaborador">Novo Colaborador</Link></li>
+            <li><NavLink to="/rh">Gestão (RH)</NavLink></li>
+            <li><NavLink to="/novo-colaborador">Novo Colaborador</NavLink></li>
           </>
         )}
 
       </ul>
 
       <button className="btn-voltar-login" onClick={handleSair}>
-        Voltar para o Login
+        Sair da Conta
       </button>
     </nav>
   );
