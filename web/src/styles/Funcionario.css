@@ -202,3 +202,32 @@
 .btn-inscrever:hover {
   opacity: 0.9;
 }
+
+/* --- ESTILOS PARA A LINHA DA SENHA NO PERFIL --- */
+
+.senha-linha {
+  display: flex;
+  align-items: center;
+  gap: 15px; /* Espaço entre o texto da senha e o botão */
+  margin-top: 5px;
+}
+
+.senha-linha p {
+  margin: 0 !important; /* Remove a margem padrão para alinhar com o botão */
+}
+
+.btn-mostrar-senha {
+  background-color: transparent;
+  color: #85a5ff;
+  border: 1px solid #85a5ff;
+  border-radius: 4px;
+  padding: 4px 10px;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-mostrar-senha:hover {
+  background-color: #85a5ff;
+  color: #1a1b1e;
+}

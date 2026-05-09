@@ -1,25 +1,31 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import '../styles/Login.css'; 
 
-//O Login agora recebe a função setUserRole como "prop"
 function Login({ setUserRole }) {
   const navigate = useNavigate();
   
   const [registro, setRegistro] = useState("");
   const [senha, setSenha] = useState("");
 
+  // NOVO: Sempre que a tela de login abrir, o sistema "esquece" quem estava logado
+  useEffect(() => {
+    setUserRole("user");
+    localStorage.removeItem("userRole");
+  }, [setUserRole]);
+
   const handleLogin = (e) => {
     e.preventDefault();
 
-    // Lógica de verificação do Administrador
     if (registro === "123456" && senha === "adm123456") {
-      setUserRole("admin"); // Avisa o App.js que é um gestor
+      setUserRole("admin"); 
+      // SE FOR ADMIN: Vai direto para a página de Gestão (RH)
+      navigate("/rh"); 
     } else {
-      setUserRole("user");  // Avisa o App.js que é um funcionário comum
+      setUserRole("user");  
+      // SE FOR UTILIZADOR COMUM: Vai para a página Home de boas-vindas
+      navigate("/home"); 
     }
-
-    navigate("/home");
   };
 
   const handleRegistroChange = (e) => {
@@ -62,6 +68,7 @@ function Login({ setUserRole }) {
             value={senha}
             onChange={(e) => setSenha(e.target.value)}
             required
+            maxLength={20}
           />
         </div>
 

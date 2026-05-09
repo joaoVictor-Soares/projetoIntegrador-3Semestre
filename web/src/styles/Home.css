@@ -68,3 +68,86 @@
   background-color: #6b8ce6;
   transform: translateY(-2px); /* Efeito de botão clicável */
 }
+
+/* --- ESTILOS DOS NOVOS CURSOS MOVIDOS PARA A HOME --- */
+
+.home-content {
+  width: 100%;
+  max-width: 1000px; /* Limita a largura para os cartões não esticarem infinitamente */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.cursos-disponiveis-section {
+  width: 100%;
+  margin-top: 60px; /* Espaço entre a barra de pesquisa e os cursos */
+  text-align: left; /* Alinha o texto dos cartões à esquerda */
+}
+
+.section-subtitle {
+  color: #85a5ff;
+  margin-bottom: 25px;
+  font-size: 1.5rem;
+  border-bottom: 2px solid #3f4147;
+  padding-bottom: 10px;
+}
+
+.cursos-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+}
+
+.curso-novo-card {
+  background-color: #36393f;
+  padding: 25px;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.2s ease;
+  border: 1px solid transparent;
+}
+
+.curso-novo-card:hover {
+  transform: translateY(-5px);
+  border-color: #85a5ff;
+}
+
+.curso-novo-card h4 {
+  color: #ffffff;
+  margin: 0 0 10px 0;
+  font-size: 1.1rem;
+}
+
+.curso-info {
+  color: #b9bbbe;
+  font-size: 0.9rem;
+  line-height: 1.4;
+  flex-grow: 1; /* Empurra o botão e a carga para o fundo do cartão */
+}
+
+.curso-carga {
+  display: block;
+  font-size: 0.85rem;
+  color: #85a5ff;
+  margin-bottom: 15px;
+  font-weight: bold;
+}
+
+.btn-inscrever {
+  background-color: #85a5ff;
+  color: #1a1b1e;
+  border: none;
+  border-radius: 6px;
+  padding: 10px;
+  font-weight: bold;
+  cursor: pointer;
+  width: 100%;
+  transition: opacity 0.2s;
+}
+
+.btn-inscrever:hover {
+  opacity: 0.9;
+}

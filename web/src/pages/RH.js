@@ -1,106 +1,169 @@
-import React from 'react';
+import React, { useState } from 'react';
 import '../styles/RH.css';
 
-// Recebemos o 'progressoFuncionario' como prop vinda do App.js
-function RH({ progressoFuncionario }) {
-  
-  // Lista de funcionários estáticos (exemplo)
+// NOVO: Recebemos a prop 'certificados' do App.js
+function RH({ progressoFuncionario, certificados = [] }) {
+  const [expandidoId, setExpandidoId] = useState(null);
+
   const equipe = [
-    { id: 1, nome: "João Silva", cargo: "Desenvolvedor", progresso: 70 },
-    { id: 2, nome: "Maria Souza", cargo: "Analista", progresso: 40 },
-    { id: 3, nome: "Carlos Lima", cargo: "Suporte", progresso: 90 },
+    { 
+      id: 1, 
+      nome: "Breno Dolcinotti", 
+      cargo: "Desenvolvedor Full Stack", 
+      departamento: "Tecnologia da Informação (TI)",
+      email: "breno.dolcinotti@sla.com",
+      cursos: [
+        { nome: "Desenvolvimento Full Stack com React", progresso: progressoFuncionario },
+        { nome: "Arquitetura de Software em Java", progresso: 25 },
+        { nome: "Redes Industriais e Profibus", progresso: 100 }
+      ]
+    },
+    { 
+      id: 2, 
+      nome: "João Victor", 
+      cargo: "Desenvolvedor Front-end", 
+      departamento: "Tecnologia da Informação (TI)",
+      email: "joao.silva@sla.com",
+      cursos: [
+        { nome: "UI/UX Design Avançado", progresso: 70 },
+        { nome: "Acessibilidade Web", progresso: 40 }
+      ]
+    },
+    { 
+      id: 3, 
+      nome: "Anna Karolina", 
+      cargo: "Lixeira", 
+      departamento: "Limpeza",
+      email: "annakarol@sla.com",
+      cursos: [
+        { nome: "Como Limpar com eficiencia", progresso: 20 },
+        { nome: "Como para de ser chata", progresso: 0 }
+      ]
+    },
+    { 
+      id: 4, 
+      nome: "Alice Prado", 
+      cargo: "Escritora", 
+      departamento: "Design",
+      email: "alice.prado@sla.com",
+      cursos: [
+        { nome: "Como escrever em linha reta", progresso: 0 },
+        { nome: "Escreva um livro em 2 dias", progresso: 10 }
+      ]
+    }
   ];
 
-  // Calculamos a média simples incluindo o teu progresso atual
-  const totalFuncionarios = equipe.length + 1;
-  const somaProgresso = equipe.reduce((acc, func) => acc + func.progresso, 0) + Number(progressoFuncionario);
-  const mediaProgresso = Math.round(somaProgresso / totalFuncionarios);
+  const toggleExpandir = (id) => {
+    setExpandidoId(expandidoId === id ? null : id);
+  };
 
   return (
     <div className="rh-container">
-      <h1 className="rh-title">Painel de Gestão (RH)</h1>
-      
-      {/* Cartões de Estatísticas */}
-      <div className="stats-grid">
-        <div className="stat-card">
-          <h3>Total de Funcionários</h3>
-          <p className="stat-number">{totalFuncionarios}</p>
-        </div>
-        <div className="stat-card">
-          <h3>Média de Progresso</h3>
-          <p className="stat-number">{mediaProgresso}%</p>
-        </div>
-      </div>
+      <h1 className="rh-title">Painel de Gestão de Funcionários</h1>
 
-      <div className="rh-content-grid">
+      <div className="monitoramento-full-section">
+        <h3>Monitoramento de Equipe</h3>
+        <p className="monitoramento-desc">Clique numa linha para expandir a ficha detalhada do colaborador.</p>
         
-        {/* Coluna da Esquerda: Monitoramento */}
-        <div className="monitoramento-section">
-          <h3>Monitoramento de Equipe</h3>
-          
-          <div className="lista-equipe">
+        <div className="lista-equipe-vertical">
+          {equipe.map(func => {
             
-            {/* O TEU PERFIL (Conectado ao Slider do Perfil) */}
-            <div className="funcionario-item">
-              <div className="func-info">
-                <strong>Breno Dolcinotti</strong>
-                <span>Desenvolvedor Full Stack</span>
-              </div>
-              <div className="barra-progresso-container">
-                <span className="porcentagem-texto">{progressoFuncionario}%</span>
-                <div className="barra-fundo">
-                  <div 
-                    className="barra-preenchimento" 
-                    style={{ width: `${progressoFuncionario}%` }}
-                  ></div>
-                </div>
-              </div>
-            </div>
+            // NOVO: Filtra os certificados que têm o mesmo nome deste funcionário
+            const certificadosDoFuncionario = certificados.filter(
+              cert => cert.nome.toLowerCase() === func.nome.toLowerCase() || 
+                      (func.nome.includes("Você") && cert.nome.toLowerCase() === "breno dolcinotti")
+            );
 
-            {/* Restante da Equipe */}
-            {equipe.map(func => (
-              <div key={func.id} className="funcionario-item">
-                <div className="func-info">
-                  <strong>{func.nome}</strong>
-                  <span>{func.cargo}</span>
-                </div>
-                <div className="barra-progresso-container">
-                  <span className="porcentagem-texto">{func.progresso}%</span>
-                  <div className="barra-fundo">
-                    <div 
-                      className="barra-preenchimento" 
-                      style={{ width: `${func.progresso}%` }}
-                    ></div>
+            return (
+              <div 
+                key={func.id} 
+                className={`funcionario-accordion-item ${expandidoId === func.id ? 'active' : ''}`}
+              >
+                
+                <div className="accordion-header" onClick={() => toggleExpandir(func.id)}>
+                  <div className="func-resumo">
+                    <div className="func-avatar">{func.nome.charAt(0)}</div>
+                    <div className="func-info-basica">
+                      <strong>{func.nome}</strong>
+                      <span>{func.cargo}</span>
+                    </div>
                   </div>
+                  <span className="seta-expansao">
+                    {expandidoId === func.id ? '▲' : '▼'}
+                  </span>
                 </div>
+
+                {expandidoId === func.id && (
+                  <div className="accordion-body">
+                    
+                    <div className="detalhes-grid">
+                      <div className="detalhes-info">
+                        <h4>Dados Cadastrais</h4>
+                        <p><strong>Nome:</strong> {func.nome}</p>
+                        <p><strong>Cargo:</strong> {func.cargo}</p>
+                        <p><strong>Departamento:</strong> {func.departamento}</p>
+                        <p><strong>E-mail:</strong> {func.email}</p>
+                      </div>
+
+                      <div className="detalhes-cursos">
+                        <h4>Trilhas de Aprendizado Ativas</h4>
+                        <ul className="cursos-lista">
+                          {func.cursos.map((curso, index) => (
+                            <li key={index} className="curso-item-detalhado">
+                              <div className="curso-cabecalho">
+                                <span className="curso-nome">🎓 {curso.nome}</span>
+                                <span className="curso-porcentagem">{curso.progresso}%</span>
+                              </div>
+                              <div className="barra-fundo-grande">
+                                <div 
+                                  className="barra-preenchimento-grande" 
+                                  style={{ width: `${curso.progresso}%` }}
+                                ></div>
+                              </div>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    </div>
+
+                    {/* NOVA SECÇÃO: Certificados do Funcionário (Ocupa a largura toda por baixo) */}
+                    <div className="detalhes-certificados">
+                      <h4>Certificados Concluídos</h4>
+                      
+                      {certificadosDoFuncionario.length === 0 ? (
+                        <p className="sem-certificados">Nenhum certificado enviado ainda.</p>
+                      ) : (
+                        <div className="certificados-grid-rh">
+                          {certificadosDoFuncionario.map((cert, index) => (
+                            <div key={index} className="certificado-card-rh">
+                              <div className="cert-icone">📄</div>
+                              <div className="cert-info">
+                                <strong>{cert.curso}</strong>
+                                <span>Enviado por: {cert.nome}</span>
+                              </div>
+                              <a 
+                                href={cert.arquivo} 
+                                target="_blank" 
+                                rel="noopener noreferrer" 
+                                className="btn-ver-arquivo"
+                              >
+                                Ver Arquivo
+                              </a>
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                    
+                  </div>
+                )}
+                
               </div>
-            ))}
-          </div>
+            );
+          })}
         </div>
-
-        {/* Coluna da Direita: Ações e Info */}
-        <div className="acoes-rh">
-          
-          <div className="card-rh">
-            <h3>Novo Colaborador</h3>
-            <div className="form-rh">
-              <input type="text" placeholder="Nome do funcionário" className="input-rh" />
-              <button className="btn-rh">Adicionar</button>
-            </div>
-          </div>
-
-          <div className="card-rh">
-            <h3>Trilhas Ativas</h3>
-            <ul className="lista-trilhas">
-              <li>Microsoft Azure Fundamentals</li>
-              <li>React Native Advanced</li>
-              <li>Lógica de Programação</li>
-            </ul>
-          </div>
-
-        </div>
-
       </div>
+
     </div>
   );
 }
