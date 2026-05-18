@@ -7,6 +7,7 @@ function Login({ setUserRole }) {
   
   const [registro, setRegistro] = useState("");
   const [senha, setSenha] = useState("");
+  const [user, setUser] = useState([])
 
   // NOVO: Sempre que a tela de login abrir, o sistema "esquece" quem estava logado
   useEffect(() => {
@@ -14,17 +15,22 @@ function Login({ setUserRole }) {
     localStorage.removeItem("userRole");
   }, [setUserRole]);
 
-  const handleLogin = (e) => {
+  const handleLogin = async(e) => {
     e.preventDefault();
 
-    if (registro === "123456" && senha === "adm123456") {
-      setUserRole("admin"); 
-      // SE FOR ADMIN: Vai direto para a página de Gestão (RH)
-      navigate("/rh"); 
-    } else {
-      setUserRole("user");  
-      // SE FOR UTILIZADOR COMUM: Vai para a página Home de boas-vindas
-      navigate("/home"); 
+    try{
+      const response = await fetch(`http://localhost:5000/login/${registro}/${senha}`);
+      if(response.ok){
+        const data = await response.json()
+        if(data.status == 201){
+          setUser(data.user)
+          console.log(data.user)
+          navigate("/rh");
+        }
+      }
+    }catch (error)
+    {
+      console.log(error);
     }
   };
 
