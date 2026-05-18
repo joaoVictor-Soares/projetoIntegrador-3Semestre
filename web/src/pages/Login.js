@@ -1,3 +1,5 @@
+// Login.jsx
+
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import '../styles/Login.css'; 
@@ -7,9 +9,8 @@ function Login({ setUserRole }) {
   
   const [registro, setRegistro] = useState("");
   const [senha, setSenha] = useState("");
-  const [user, setUser] = useState([])
+  const [user, setUser] = useState([]);
 
-  // NOVO: Sempre que a tela de login abrir, o sistema "esquece" quem estava logado
   useEffect(() => {
     setUserRole("user");
     localStorage.removeItem("userRole");
@@ -21,11 +22,13 @@ function Login({ setUserRole }) {
     try{
       const response = await fetch(`http://localhost:5000/login/${registro}/${senha}`);
       if(response.ok){
-        const data = await response.json()
+        const data = await response.json();
         if(data.status == 201){
-          setUser(data.user)
-          console.log(data.user)
-          navigate("/rh");
+          setUser(data.user);
+          console.log(data.user);
+          navigate("/funcionario", {
+            state: { user: data.user }
+          });
         }
       }
     }catch (error)
@@ -50,6 +53,7 @@ function Login({ setUserRole }) {
           <label htmlFor="registro" className="form-label">
             Digite seu número de registro:
           </label>
+
           <input
             type="text"
             id="registro"
@@ -66,6 +70,7 @@ function Login({ setUserRole }) {
           <label htmlFor="senha" className="form-label">
             Digite sua senha:
           </label>
+
           <input
             type="password"
             id="senha"
