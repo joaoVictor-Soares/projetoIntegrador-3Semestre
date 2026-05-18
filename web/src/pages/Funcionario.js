@@ -8,22 +8,19 @@ function Funcionario({ setProgresso }) {
 
   const location = useLocation();
 
-  const user = location.state?.user || [];
+  // PEGA DO STATE OU DO LOCALSTORAGE
+  const user =
+    location.state?.user ||
+    JSON.parse(localStorage.getItem("funcionario")) ||
+    [];
 
   const funcionario = user[0];
-
   const [mostrarSenha, setMostrarSenha] = useState(false);
-
   const [cursosEmAndamento, setCursosEmAndamento] = useState([]);
-  
   const [mostrarFormulario, setMostrarFormulario] = useState(false); 
-
   const [nomeNovoCurso, setNomeNovoCurso] = useState("");
-
   const handleAdicionarCurso = () => {
-
     if (nomeNovoCurso.trim() !== "") {
-
       const novoCurso = {
         id: Date.now(),
         nome: nomeNovoCurso,
@@ -31,7 +28,6 @@ function Funcionario({ setProgresso }) {
       };
 
       setCursosEmAndamento([...cursosEmAndamento, novoCurso]);
-
       setNomeNovoCurso(""); 
     }
   };
@@ -41,27 +37,22 @@ function Funcionario({ setProgresso }) {
     const cursosAtualizados = cursosEmAndamento.map(curso => 
       curso.id === id ? { ...curso, progresso: novoValor } : curso
     );
-
     setCursosEmAndamento(cursosAtualizados);
   };
-
   const handleSalvarProgresso = (curso) => {
-
     if (setProgresso) setProgresso(curso.progresso); 
-
     alert(`Progresso do curso "${curso.nome}" salvo em ${curso.progresso}%!`);
   };
 
   return (
-
     <div className="funcionario-container">
 
       <h1 className="perfil-header-title">
-        Funcionário: {funcionario?.nome}
+        Funcionário: {funcionario?.name}
       </h1>
 
       <p className="perfil-registro">
-        Número de Registro: {funcionario?.registro}
+        Número de Registro: {funcionario?.numero_registro}
       </p>
       
       <div className="perfil-dados-extra">
