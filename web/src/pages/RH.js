@@ -32,11 +32,11 @@ function RH({ progressoFuncionario, certificados = [] }) {
     { 
       id: 3, 
       nome: "Anna Karolina", 
-      cargo: "Lixeira", 
-      departamento: "Limpeza",
+      cargo: "Engenheira de Software", 
+      departamento: "Engenharia",
       email: "annakarol@sla.com",
       cursos: [
-        { nome: "Como Limpar com eficiencia", progresso: 20 },
+        { nome: "Criação de Software", progresso: 20 },
         { nome: "Como para de ser chata", progresso: 0 }
       ]
     },
