@@ -7,14 +7,23 @@ import '../styles/Funcionario.css';
 function Funcionario({ setProgresso }) {
 
   const location = useLocation();
-  const user = location.state?.user;
+
+  const user = location.state?.user || [];
+
+  const funcionario = user[0];
+
   const [mostrarSenha, setMostrarSenha] = useState(false);
+
   const [cursosEmAndamento, setCursosEmAndamento] = useState([]);
+  
   const [mostrarFormulario, setMostrarFormulario] = useState(false); 
+
   const [nomeNovoCurso, setNomeNovoCurso] = useState("");
 
   const handleAdicionarCurso = () => {
+
     if (nomeNovoCurso.trim() !== "") {
+
       const novoCurso = {
         id: Date.now(),
         nome: nomeNovoCurso,
@@ -22,11 +31,13 @@ function Funcionario({ setProgresso }) {
       };
 
       setCursosEmAndamento([...cursosEmAndamento, novoCurso]);
-      setNomeNovoCurso("");
+
+      setNomeNovoCurso(""); 
     }
   };
 
   const handleProgressoChange = (id, novoValor) => {
+
     const cursosAtualizados = cursosEmAndamento.map(curso => 
       curso.id === id ? { ...curso, progresso: novoValor } : curso
     );
@@ -35,35 +46,38 @@ function Funcionario({ setProgresso }) {
   };
 
   const handleSalvarProgresso = (curso) => {
+
     if (setProgresso) setProgresso(curso.progresso); 
+
     alert(`Progresso do curso "${curso.nome}" salvo em ${curso.progresso}%!`);
   };
 
   return (
+
     <div className="funcionario-container">
 
       <h1 className="perfil-header-title">
-        Funcionário: {user?.nome}
+        Funcionário: {funcionario?.nome}
       </h1>
 
       <p className="perfil-registro">
-        Número de Registro: {user?.registro}
+        Número de Registro: {funcionario?.registro}
       </p>
       
       <div className="perfil-dados-extra">
 
         <p>
-          <strong>Cargo:</strong> {user?.cargo}
+          <strong>Cargo:</strong> {funcionario?.cargo}
         </p>
 
         <p>
-          <strong>Departamento:</strong> {user?.departamento}
+          <strong>Departamento:</strong> {funcionario?.departamento}
         </p>
 
         <div className="senha-linha">
 
           <p>
-            <strong>Senha:</strong> {mostrarSenha ? user?.senha : "••••••••"}
+            <strong>Senha:</strong> {mostrarSenha ? funcionario?.senha : "••••••••"}
           </p>
 
           <button 
