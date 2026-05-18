@@ -31,6 +31,8 @@ function Login({ setUserRole }) {
 
         if(data.status == 201){
 
+          console.log(data.user);
+
           const usuarioArray = [data.user];
 
           setUser(usuarioArray);

@@ -16,9 +16,7 @@ CORS(app)
 #     conexao = conectar()
 #     cursor = conexao.cursor()
 
-#     cursos = json.loads(jsonDados)
-
-#     for curso in cursos:
+#     for curso in jsonDados:
 #         titulo = curso['titulo']
 #         resumo = curso['resumo']
 #         link = curso['link']
@@ -37,21 +35,27 @@ CORS(app)
 #     cursor.close()
 #     conexao.close()
 
+# @app.route("/")
+# def cursosBanco():
+#     dados = dadosCursosTraduzidos()
+#     salvarCursosNoBanco(dados)
+#     return("salvando dados")
+
 
 #TODO: melhorar essa lógica de login
 @app.get("/login/<username>/<password>")
 def login(username: str, password: str):
     conexao = conectar()
-    cursor = conexao.cursor()
-    users = ""
-
+    cursor = conexao.cursor(dictionary=True)
+    user = ""
+    
     try:
         cursor.execute(
-            "SELECT token FROM login WHERE username = %s AND password = %s",
+            "SELECT name, numero_registro, cargo, departamento FROM login WHERE username = %s AND password = %s",
             (username, password)
         )
 
-        users = cursor.fetchall()
+        user = cursor.fetchall()
 
         cursor.close()
         conexao.close()
@@ -59,12 +63,19 @@ def login(username: str, password: str):
     except Exception as e:
         print(e)
 
-    if not users:
-        return jsonify({"erro": "Usuário ou senha incorretos"}), 401
-    return users
+    if not user:
+        return jsonify({
+            "erro": "Usuário ou senha incorretos", 
+            "status": 405
+            })
+    return jsonify({
+        "user": user,
+        "status": 201
+    })
 
 @app.post("/cadastro")
 def cadastro():
+    id = 0
     dados = request.get_json(force=True)
 
     if not dados or "username" not in dados or "password" not in dados:
@@ -72,19 +83,20 @@ def cadastro():
             "erro": "Campos inválidos"
         })
 
-    #id = random.randint(1,100)
     username = dados["username"]
     password = dados["password"]
-    token = secrets.token_bytes(16)
-    token_string = base64.b64encode(token).decode('utf-8')
+    name = dados["name"]
+    numero_registro = dados["numero_registro"]
+    cargo = dados ["cargo"]
+    departamento = dados["departamento"]
 
     conexao = conectar()
     cursor = conexao.cursor()
 
     try:
         cursor.execute(
-            "INSERT INTO login (username, password, token) VALUES(%s, %s, %s)",
-            (username, password, token_string)
+            "INSERT INTO login (username, password, name, numero_registro, cargo, departamento) VALUES(%s, %s, %s, %s, %s, %s)",
+            (username, password, name, numero_registro, cargo, departamento)
         )
 
         conexao.commit()
@@ -93,7 +105,7 @@ def cadastro():
 
         return jsonify({
             "status": 201,
-            "token": token_string
+            "token": numero_registro
         })
         
     except Exception as e:
@@ -119,16 +131,31 @@ def buscarCursos():
     finally:
         cursor.close()
         conexao.close()
-
-
-@app.post("/cadastrar")
-def cadastro():
+    
+@app.get("/buscar_cursos_palavras/<palavra>")
+def buscar_cursos_palavras(palavra: str):
     conexao = conectar()
-    cursor = conexao.cursor()
+    cursor = conexao.cursor(dictionary=True)
+    cursos = []
+    busca = f"%{palavra}%"
+    query =  "SELECT titulo, resumo, link, nivel, duracao FROM cursos WHERE titulo LIKE %s"
 
-    cursor.execute(
-        "INSERT INTO login (username, password) VALUES"
-    )
+    try:
+        cursor.execute(query, (busca,))
+        cursos = cursor.fetchall()
+    except Exception as e:
+        return jsonify({"erro": str(e)})
+    finally:
+        conexao.close()
+        cursor.close()
+
+    if not cursos:
+        return jsonify({"resultado": "Nenhuma resposta para essa palavra"})
+    return jsonify(cursos)
+
+@app.get("/buscar_cursos_realizados/<registro>")
+def buscar_cursos_realizados(registro: str):
+    cursos = []
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000, debug=FLASK_DEBUG)
