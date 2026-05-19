@@ -62,11 +62,28 @@ function Funcionario({ setProgresso }) {
 
         <div className="form-adicionar-curso">
           <button 
-            className="btn-abrir-adicionar"
-            // Ao clicar, inverte o estado: se está fechado, abre. Se está aberto, fecha.
+            className="btn-abrir-adicionar" 
+            type="button"
             onClick={() => setMostrarFormulario(!mostrarFormulario)}
           >
-            + Adicionar Curso
+            <span className="button__text">Adicionar</span>
+            <span className="button__icon">
+              <svg 
+                className="svg" 
+                fill="none" 
+                height="24" 
+                stroke="currentColor" 
+                strokeLinecap="round" 
+                strokeLinejoin="round" 
+                strokeWidth="2" 
+                viewBox="0 0 24 24" 
+                width="24" 
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <line x1="12" x2="12" y1="5" y2="19"></line>
+                <line x1="5" x2="19" y1="12" y2="12"></line>
+              </svg>
+            </span>
           </button>
 
           {/* O campo de input e o botão OK só aparecem se 'mostrarFormulario' for true */}

@@ -363,3 +363,73 @@
   text-transform: uppercase;
   margin-top: 10px;
 }
+
+/* --- NOVO BOTÃO ADICIONAR CURSO COM ANIMAÇÃO --- */
+
+.btn-abrir-adicionar {
+  /* Cores adaptadas para o seu tema escuro */
+  --font-color: #ffffff;
+  --bg-color-sub: #36393f;
+  --bg-color: #2b2d31;
+  --main-color: #85a5ff;
+  
+  position: relative;
+  width: 150px;
+  height: 40px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  border: 2px solid var(--main-color);
+  box-shadow: 4px 4px var(--main-color);
+  background-color: var(--bg-color);
+  border-radius: 10px;
+  overflow: hidden;
+  padding: 0; /* Remove paddings padrão do botão */
+}
+
+.btn-abrir-adicionar, 
+.btn-abrir-adicionar .button__icon, 
+.btn-abrir-adicionar .button__text {
+  transition: all 0.3s;
+}
+
+.btn-abrir-adicionar .button__text {
+  transform: translateX(22px);
+  color: var(--font-color);
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+.btn-abrir-adicionar .button__icon {
+  position: absolute;
+  transform: translateX(109px);
+  height: 100%;
+  width: 39px;
+  background-color: var(--bg-color-sub);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-abrir-adicionar .svg {
+  width: 20px;
+  stroke: var(--main-color);
+}
+
+.btn-abrir-adicionar:hover {
+  background: var(--bg-color);
+}
+
+.btn-abrir-adicionar:hover .button__text {
+  color: transparent;
+}
+
+.btn-abrir-adicionar:hover .button__icon {
+  width: 146px; /* Ajustado para encaixar perfeitamente sem sobrepor a borda */
+  transform: translateX(0);
+}
+
+.btn-abrir-adicionar:active {
+  transform: translate(3px, 3px);
+  box-shadow: 0px 0px var(--main-color);
+}
