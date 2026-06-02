@@ -55,6 +55,8 @@ services:
     
     volumes:
       - ./backend:/app
+      - certificados_data:/app/uploads
 
 volumes:
   mysql_data:
+  certificados_data: 

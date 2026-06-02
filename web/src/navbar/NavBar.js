@@ -1,13 +1,14 @@
 import React from 'react';
 import { NavLink, useNavigate } from 'react-router-dom'; // Trocamos Link por NavLink
 import '../styles/NavBar.css'; 
+import { useAuth } from '../context/AuthContext';
 
-function NavBar({ userRole }) {
-  const navigate = useNavigate();
+function NavBar() {
+  const { userRole, usuario, logoutGlobal } = useAuth();
 
-  const handleSair = () => {
-    navigate("/");
-  };
+  if(!usuario){
+    return null;
+  }
 
   return (
     <nav className="navbar">
@@ -35,7 +36,7 @@ function NavBar({ userRole }) {
 
       </ul>
 
-      <button className="btn-voltar-login" onClick={handleSair}>
+      <button className="btn-voltar-login" onClick={logoutGlobal}>
         Sair da Conta
       </button>
     </nav>

@@ -3,18 +3,13 @@
 import React, { useState } from 'react';
 import { useLocation } from "react-router-dom";
 import '../styles/Funcionario.css';
+import { useAuth } from '../context/AuthContext';
 
 function Funcionario({ setProgresso }) {
 
-  const location = useLocation();
-
-  // PEGA DO STATE OU DO LOCALSTORAGE
-  const user =
-    location.state?.user ||
-    JSON.parse(localStorage.getItem("funcionario")) ||
-    [];
-
-  const funcionario = user[0];
+  const { usuario } = useAuth();
+  const funcionario = usuario;
+  console.log(funcionario)
   const [mostrarSenha, setMostrarSenha] = useState(false);
   const [cursosEmAndamento, setCursosEmAndamento] = useState([]);
   const [mostrarFormulario, setMostrarFormulario] = useState(false); 
@@ -29,7 +24,7 @@ function Funcionario({ setProgresso }) {
 
       setCursosEmAndamento([...cursosEmAndamento, novoCurso]);
       setNomeNovoCurso(""); 
-    }
+    } 
   };
 
   const handleProgressoChange = (id, novoValor) => {
@@ -48,27 +43,27 @@ function Funcionario({ setProgresso }) {
     <div className="funcionario-container">
 
       <h1 className="perfil-header-title">
-        Funcionário: {funcionario?.name}
+        Funcionário: {funcionario[0]?.name}
       </h1>
 
       <p className="perfil-registro">
-        Número de Registro: {funcionario?.numero_registro}
+        Número de Registro: {funcionario[0]?.numero_registro}
       </p>
       
       <div className="perfil-dados-extra">
 
         <p>
-          <strong>Cargo:</strong> {funcionario?.cargo}
+          <strong>Cargo:</strong> {funcionario[0]?.cargo}
         </p>
 
         <p>
-          <strong>Departamento:</strong> {funcionario?.departamento}
+          <strong>Departamento:</strong> {funcionario[0]?.departamento}
         </p>
 
         <div className="senha-linha">
 
           <p>
-            <strong>Senha:</strong> {mostrarSenha ? funcionario?.senha : "••••••••"}
+            <strong>Senha:</strong> {mostrarSenha ? funcionario[0]?.password : "••••••••"}
           </p>
 
           <button 

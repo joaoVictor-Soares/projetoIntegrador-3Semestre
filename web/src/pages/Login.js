@@ -3,22 +3,19 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import '../styles/Login.css'; 
+import { useAuth } from "../context/AuthContext";
 
-function Login({ setUserRole }) {
+function Login() {
 
   const navigate = useNavigate();
+  const { loginGlobal } = useAuth();
   
   const [registro, setRegistro] = useState("");
   const [senha, setSenha] = useState("");
   const [user, setUser] = useState([]);
-
-  useEffect(() => {
-    setUserRole("user");
-    localStorage.removeItem("userRole");
-  }, [setUserRole]);
+  const [erro, setErro] = useState("")
 
   const handleLogin = async(e) => {
-
     e.preventDefault();
 
     try{
@@ -29,20 +26,21 @@ function Login({ setUserRole }) {
 
         const data = await response.json();
 
-        if(data.status == 201){
+        if(data.status === 201){
 
           console.log(data.user);
 
-          const usuarioArray = [data.user];
+          const usuarioArray = data.user;
+          console.log(usuarioArray)
 
           setUser(usuarioArray);
 
-          // SALVA NO LOCALSTORAGE
-          localStorage.setItem("funcionario", JSON.stringify(usuarioArray));
-
-          navigate("/funcionario", {
-            state: { user: usuarioArray }
-          });
+          loginGlobal(usuarioArray)
+         
+          navigate("/home");
+        }
+        else{
+          setErro("Usuário ou senha inválidos");
         }
       }
 
@@ -67,6 +65,10 @@ function Login({ setUserRole }) {
       <h2 className="login-welcome">
         Bem vindo! Faça seu login:
       </h2>
+
+      <div>
+        {erro}
+      </div>
       
       <form onSubmit={handleLogin} style={{ width: '100%' }}>
         

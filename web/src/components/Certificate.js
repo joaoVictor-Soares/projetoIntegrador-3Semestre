@@ -1,13 +1,28 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import '../styles/Certificate.css'; 
+import { useAuth } from '../context/AuthContext';
 
 // Recebe os certificados e a função de atualizar via props
 function Certificate({ certificados, setCertificados }) {
+  const { usuario } = useAuth();
+  console.log("Usuário completo do Contexto:", usuario)
+  
+  // Como o Contexto já entrega o objeto limpo do usuário, pegamos direto sem o [0]
+  const usuarioId = usuario[0]?.numero_registro;
+  console.log(usuarioId)
   const [nomeCurso, setNomeCurso] = useState("");
   const [arquivo, setArquivo] = useState(null);
   const [isDragging, setIsDragging] = useState(false);
+  const [mensagem, setMensagem] = useState(""); // Declarado o estado de mensagem que faltava
   
   const fileInputRef = useRef(null);
+
+  // Busca automática ao carregar a página se o ID existir
+  useEffect(() => {
+    if (usuarioId) {
+      buscarCertificados();
+    }
+  }, [usuarioId]);
 
   const handleDragOver = (e) => {
     e.preventDefault();
@@ -34,27 +49,77 @@ function Certificate({ certificados, setCertificados }) {
     }
   };
 
-  const handleSalvar = () => {
-    if (nomeCurso.trim() === "" || !arquivo) {
-      alert("Preencha o nome e anexe um arquivo.");
+  const buscarCertificados = async () => {
+    if (!usuarioId) {
+      setMensagem("Por favor, faça login para verificar o número de registro.");
       return;
     }
 
-    const arquivoUrl = URL.createObjectURL(arquivo);
+    try {
+      const response = await fetch(`http://localhost:5000/api/certificados?usuario_id=${usuarioId}`);
+      const dados = await response.json();
 
-    const novoCertificado = {
-      id: Date.now(),
-      nome: nomeCurso,
-      nomeArquivo: arquivo.name,
-      data: new Date().toLocaleDateString('pt-BR'),
-      link: arquivoUrl
-    };
+      if (response.ok) {
+        // Atualiza tanto o estado global recebido via prop quanto limpa mensagens
+        setCertificados(dados);
+        setMensagem('');
+      } else {
+        setMensagem(dados.erro || 'Erro ao buscar certificados.');
+      }
+    } catch (error) {
+      console.error(error);
+      setMensagem('Erro de conexão com o servidor.');
+    }
+  };
 
-    setCertificados([...certificados, novoCertificado]);
+  const handleSalvar = async (e) => {
+    e.preventDefault();
     
-    // Limpa apenas os campos de entrada locais
-    setNomeCurso("");
-    setArquivo(null);
+    if (nomeCurso.trim() === "" || !arquivo) {
+      alert("Preencha o nome do curso e anexe um arquivo.");
+      return;
+    }
+
+    if (!usuarioId) {
+      alert("Erro: ID de usuário não identificado. Faça login novamente.");
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append('arquivo', arquivo);
+    // Verifique se o seu backend Flask espera 'usuario_id' ou 'usuarioId' no request.form
+    formData.append('usuario_id', usuarioId); 
+
+    try {
+      // 1. CORRIGIDO: Alterado de hrrp:// para http://
+      const response = await fetch('http://localhost:5000/api/certificados/upload', {
+        method: 'POST',
+        body: formData
+      });
+
+      // 2. CORRIGIDO: Adicionado o await necessário para ler o json
+      const dados = await response.json();
+
+      if (response.ok) {
+        alert(dados.mensagem || "Upload realizado com sucesso");
+        
+        // 5. CORRIGIDO: Ajustado o ID para 'input_arquivo' batendo com o HTML
+        setArquivo(null);
+        if (document.getElementById('input_arquivo')) {
+          document.getElementById('input_arquivo').value = '';
+        }
+        setNomeCurso("");
+        
+        // Recarrega a lista do backend atualizada
+        buscarCertificados();
+        
+      } else {
+        alert(`Erro do servidor: ${dados.erro}`);
+      }
+    } catch (error) {
+      console.error(error);
+      alert("Erro ao enviar arquivo para o servidor.");
+    }
   };
 
   const abrirCertificado = (link) => {
@@ -64,6 +129,8 @@ function Certificate({ certificados, setCertificados }) {
   return (
     <div className="dashboard-container">
       <h1 className="dashboard-title">Meus Certificados</h1>
+      
+      {mensagem && <p style={{ color: 'red', textAlign: 'center' }}>{mensagem}</p>}
       
       <div className="card upload-card">
         <h2>Adicionar Novo Certificado</h2>
@@ -86,6 +153,7 @@ function Certificate({ certificados, setCertificados }) {
           onClick={() => fileInputRef.current.click()}
         >
           <input 
+            id='input_arquivo'
             type="file" 
             ref={fileInputRef} 
             onChange={handleFileInput} 
@@ -109,20 +177,29 @@ function Certificate({ certificados, setCertificados }) {
       <h2 className="section-title">Certificados Salvos</h2>
       
       <div className="trilhas-grid">
-        {certificados.map(cert => (
-          <div key={cert.id} className="card">
-            <h3 style={{ color: '#85a5ff', marginBottom: '10px' }}>{cert.nome}</h3>
-            
-            <div className="user-info">
-              <p style={{ marginBottom: '8px' }}><strong>Arquivo:</strong> {cert.nomeArquivo}</p>
-              <p style={{ marginBottom: '15px' }}><strong>Data de Upload:</strong> {cert.data}</p>
-            </div>
+        {certificados && certificados.length === 0 ? (
+          <p style={{ gridColumn: '1/-1', textAlign: 'center', color: '#aaa' }}>
+            Nenhum certificado carregado para este usuário.
+          </p>
+        ) : (
+          certificados.map(cert => (
+            <div key={cert.id} className="card">
+              {/* Adapte as chaves abaixo (nome, nome_original, url_download) 
+                  de acordo com o JSON que o seu Flask retorna no GET */}
+              <h3 style={{ color: '#85a5ff', marginBottom: '10px' }}>{cert.nome_original || cert.nome}</h3>
+              
+              <div className="user-info">
+                <p style={{ marginBottom: '15px' }}>
+                  <strong>Data de Upload:</strong> {cert.data || new Date().toLocaleDateString('pt-BR')}
+                </p>
+              </div>
 
-            <button className="btn-outline" onClick={() => abrirCertificado(cert.link)}>
-              Visualizar
-            </button>
-          </div>
-        ))}
+              <button className="btn-outline" onClick={() => abrirCertificado(cert.url_download || cert.link)}>
+                Visualizar
+              </button>
+            </div>
+          ))
+        )}
       </div>
     </div>
   );

@@ -1,7 +1,53 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import '../styles/Home.css'; 
 
 function Home() {
+  const [cursos, setCursos] = useState([])
+  const [termoPalavra, setTermoPalavra] = useState('')
+  const [naoLocalizado, setNaoLocalizado] = useState(false)
+  const [mensagemErro, setMensagemErro] = useState('')
+
+  useEffect(() => {
+   buscar_cursos()
+  }, [])
+
+  async function buscar_cursos() {
+     try{
+      const response = await fetch("http://localhost:5000/cursos_home")
+      const data = await response.json()
+      setCursos(data)
+    }catch{
+      console.log("erro")
+    }
+  }
+
+async function buscarPorPalavra(e) {
+  const palavra = e.target.value; 
+
+  if (!palavra.trim()) {
+    buscar_cursos();
+    return;
+  }
+
+  setCursos([]);
+  try {
+    const response = await fetch(`http://localhost:5000/buscar_cursos_palavras/${palavra}`);
+    const data = await response.json();
+    if(data.resultado){
+      setNaoLocalizado(true)
+      setMensagemErro(data.resultado)
+    }
+    else{
+      setNaoLocalizado(false)
+      setCursos(data);
+    }
+  } catch {
+    console.log("erro");
+  }
+}
+
+  console.log(cursos)
+
   return (
     <div className="home-wrapper">
       <div className="home-content">
@@ -14,41 +60,40 @@ function Home() {
             type="text" 
             className="search-input" 
             placeholder="Buscar cursos..." 
+            onChange={(e) => buscarPorPalavra(e)}
           />
           <button className="search-button">
             Buscar
           </button>
         </div>
 
-        {/* NOVO: Secção de Cursos movida para a Home */}
-        <div className="cursos-disponiveis-section">
+        {!naoLocalizado ? (
+          <div className="cursos-disponiveis-section">
           <h2 className="section-subtitle">Novos Cursos Disponíveis</h2>
-          
           <div className="cursos-grid">
-            
-            <div className="curso-novo-card">
-              <h4>Python e IoT na Indústria</h4>
-              <p className="curso-info">Aprenda a integrar sensores e equipamentos usando Python e protocolos industriais.</p>
-              <span className="curso-carga">Carga horária: 40h</span>
-              <button className="btn-inscrever">Inscrever-se</button>
-            </div>
 
-            <div className="curso-novo-card">
-              <h4>Arquitetura de Software em Java</h4>
-              <p className="curso-info">Padrões de projeto, microsserviços e boas práticas para sistemas escaláveis.</p>
-              <span className="curso-carga">Carga horária: 60h</span>
-              <button className="btn-inscrever">Inscrever-se</button>
+          {cursos.map((c) => (
+            <div className="curso-novo-card" key={c.id || c.titulo}>
+              <h4>{c.titulo}</h4>
+              <p className="curso-info">{c.resumo}</p>
+              <span className="curso-carga">{c.duracao}</span>
+              <span className="curso-carga">{c.nivel}</span>
+              <button className="btn-inscrever" >Inscrever-se</button>
+              <br></br>
+              <a className="btn-inscrever" href={c.link}>Ver Curso</a>
             </div>
-
-            <div className="curso-novo-card">
-              <h4>Redes Industriais e Profibus</h4>
-              <p className="curso-info">Fundamentos de comunicação em chão de fábrica e automação.</p>
-              <span className="curso-carga">Carga horária: 20h</span>
-              <button className="btn-inscrever">Inscrever-se</button>
-            </div>
-
-          </div>
+          ))}
+         </div>
         </div>
+        ) : (
+          <div className="cursos-disponiveis-section">
+            {mensagemErro}
+          </div>
+        )}
+        <br></br>
+        <br></br>
+        <br></br>
+        <br></br>
 
       </div>
     </div>
