@@ -1,15 +1,24 @@
+// Funcionario.jsx
+
 import React, { useState } from 'react';
+import { useLocation } from "react-router-dom";
 import '../styles/Funcionario.css';
 
 function Funcionario({ setProgresso }) {
-  const [mostrarSenha, setMostrarSenha] = useState(false);
 
+  const location = useLocation();
+
+  // PEGA DO STATE OU DO LOCALSTORAGE
+  const user =
+    location.state?.user ||
+    JSON.parse(localStorage.getItem("funcionario")) ||
+    [];
+
+  const funcionario = user[0];
+  const [mostrarSenha, setMostrarSenha] = useState(false);
   const [cursosEmAndamento, setCursosEmAndamento] = useState([]);
-  
-  // AQUI FOI A MUDANÇA: Começa como 'false' para esconder o campo e o botão OK no início
   const [mostrarFormulario, setMostrarFormulario] = useState(false); 
   const [nomeNovoCurso, setNomeNovoCurso] = useState("");
-
   const handleAdicionarCurso = () => {
     if (nomeNovoCurso.trim() !== "") {
       const novoCurso = {
@@ -17,20 +26,19 @@ function Funcionario({ setProgresso }) {
         nome: nomeNovoCurso,
         progresso: 0 
       };
+
       setCursosEmAndamento([...cursosEmAndamento, novoCurso]);
       setNomeNovoCurso(""); 
-      // Opcional: Se quiser que o campo feche de novo após adicionar o curso, descomente a linha abaixo:
-      // setMostrarFormulario(false); 
     }
   };
 
   const handleProgressoChange = (id, novoValor) => {
+
     const cursosAtualizados = cursosEmAndamento.map(curso => 
       curso.id === id ? { ...curso, progresso: novoValor } : curso
     );
     setCursosEmAndamento(cursosAtualizados);
   };
-
   const handleSalvarProgresso = (curso) => {
     if (setProgresso) setProgresso(curso.progresso); 
     alert(`Progresso do curso "${curso.nome}" salvo em ${curso.progresso}%!`);
@@ -38,32 +46,56 @@ function Funcionario({ setProgresso }) {
 
   return (
     <div className="funcionario-container">
-      {/* 1. ÁREA DO PERFIL */}
-      <h1 className="perfil-header-title">Funcionário: Breno Dolcinotti</h1>
-      <p className="perfil-registro">Número de Registro: 123456</p>
+
+      <h1 className="perfil-header-title">
+        Funcionário: {funcionario?.name}
+      </h1>
+
+      <p className="perfil-registro">
+        Número de Registro: {funcionario?.numero_registro}
+      </p>
       
       <div className="perfil-dados-extra">
-        <p><strong>Cargo:</strong> Desenvolvedor de Sistemas</p>
-        <p><strong>Departamento:</strong> Tecnologia da Informação (TI)</p>
+
+        <p>
+          <strong>Cargo:</strong> {funcionario?.cargo}
+        </p>
+
+        <p>
+          <strong>Departamento:</strong> {funcionario?.departamento}
+        </p>
+
         <div className="senha-linha">
-          <p><strong>Senha:</strong> {mostrarSenha ? "adm123456" : "••••••••"}</p>
+
+          <p>
+            <strong>Senha:</strong> {mostrarSenha ? funcionario?.senha : "••••••••"}
+          </p>
+
           <button 
             className="btn-mostrar-senha" 
             onClick={() => setMostrarSenha(!mostrarSenha)}
           >
             {mostrarSenha ? "Ocultar" : "Mostrar"}
           </button>
+
         </div>
       </div>
 
-      {/* 2. CURSOS EM ANDAMENTO */}
       <div className="cursos-andamento-section">
-        <h2 className="cursos-titulo">Cursos em andamento</h2>
+
+        <h2 className="cursos-titulo">
+          Cursos em andamento
+        </h2>
 
         <div className="form-adicionar-curso">
+
           <button 
+<<<<<<< HEAD
             className="btn-abrir-adicionar" 
             type="button"
+=======
+            className="btn-abrir-adicionar"
+>>>>>>> 48db723cc0c8cdef69fbb95c737bf21ffb0a75c8
             onClick={() => setMostrarFormulario(!mostrarFormulario)}
           >
             <span className="button__text">Adicionar</span>
@@ -86,7 +118,6 @@ function Funcionario({ setProgresso }) {
             </span>
           </button>
 
-          {/* O campo de input e o botão OK só aparecem se 'mostrarFormulario' for true */}
           {mostrarFormulario && (
             <>
               <input 
@@ -96,7 +127,11 @@ function Funcionario({ setProgresso }) {
                 onChange={(e) => setNomeNovoCurso(e.target.value)}
                 className="input-nome-curso"
               />
-              <button className="btn-ok-adicionar" onClick={handleAdicionarCurso}>
+
+              <button 
+                className="btn-ok-adicionar" 
+                onClick={handleAdicionarCurso}
+              >
                 OK
               </button>
             </>
@@ -104,10 +139,15 @@ function Funcionario({ setProgresso }) {
         </div>
 
         <div className="lista-cursos-cards">
+
           {cursosEmAndamento.map((curso) => (
             <div key={curso.id} className="curso-card-individual">
+
               <h3>{curso.nome}</h3>
-              <span className="curso-porcentagem">{curso.progresso}%</span>
+
+              <span className="curso-porcentagem">
+                {curso.progresso}%
+              </span>
               
               <input 
                 type="range" 
@@ -124,6 +164,7 @@ function Funcionario({ setProgresso }) {
               >
                 OK
               </button>
+
             </div>
           ))}
         </div>
