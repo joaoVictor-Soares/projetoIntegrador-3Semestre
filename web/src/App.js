@@ -31,7 +31,7 @@ function App() {
           } />
           
           <Route path="/rh" element={
-            <><NavBar /><RH progressoFuncionario={meuProgresso} certificados={listaCertificadosGlobal} /></>
+            <><NavBar /><RH progressoFuncionario={meuProgresso} certificados={listaCertificadosGlobal} setCertificados={setListaCertificadosGlobal}/></>
           } />
 
           <Route path="/novo-colaborador" element={

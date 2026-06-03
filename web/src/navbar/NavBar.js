@@ -36,6 +36,7 @@ function NavBar() {
         {/* 4. CORREÇÃO: Menu visível para o cargo 'RH' */}
         {cargo === "RH" && (
           <>
+            <li><NavLink to="/funcionario">Meu Perfil</NavLink></li>
             <li><NavLink to="/home">Home</NavLink></li>
             <li><NavLink to="/rh">Gestão (RH)</NavLink></li>
             <li><NavLink to="/novo-colaborador">Novo Colaborador</NavLink></li>

@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import '../styles/Home.css'; 
+import { useAuth } from '../context/AuthContext';
 
 function Home() {
+  const { usuario } = useAuth()
+  const usuarioId = usuario?.numero_registro;
   const [cursos, setCursos] = useState([])
   const [termoPalavra, setTermoPalavra] = useState('')
   const [naoLocalizado, setNaoLocalizado] = useState(false)
@@ -47,7 +50,22 @@ async function buscarPorPalavra(e) {
 }
 
 async function inscrever(id) {
-  
+  try {
+       const response = await fetch("http://localhost:5000/cursos_inscritos", {
+        method : "POST",
+        headers : {"Content-Type" : "application/json"},
+        body : JSON.stringify({
+          "registro": usuarioId,
+          "cursoId": id
+        })
+      })
+
+      if(response.ok){
+        alert("Inscrição realizada com sucesso")
+      }
+    }catch{
+      console.log("erro")
+    }
 }
 
   console.log(cursos)
@@ -82,7 +100,7 @@ async function inscrever(id) {
               <p className="curso-info">{c.resumo}</p>
               <span className="curso-carga">{c.duracao}</span>
               <span className="curso-carga">{c.nivel}</span>
-              <button className="btn-inscrever" >Inscrever-se</button>
+              <button className="btn-inscrever" onClick={() => inscrever(c.id)}>Inscrever-se</button>
               <br></br>
               <a className="btn-inscrever" href={c.link}>Ver Curso</a>
             </div>

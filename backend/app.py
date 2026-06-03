@@ -138,7 +138,21 @@ def buscar_cursos_palavras(palavra: str):
 
 @app.get("/buscar_cursos_realizados/<registro>")
 def buscar_cursos_realizados(registro: str):
+    conexao = conectar()
+    cursor = conexao.cursor(dictionary=True)
     cursos = []
+    try:
+        cursor.execute( 
+            "SELECT c.id, c.titulo, c.link, c.duracao, ci.status from cursos as c inner join cursos_iniciados as ci on ci.id_curso = c.id where ci.usuario_id = %s",
+            (registro,)
+        )
+        cursos = cursor.fetchall()
+        return jsonify(cursos)
+    except Exception as e:
+        return jsonify({"erro": e})
+    finally:
+        cursor.close()
+        conexao.close()
 
 @app.get("/cursos_home")
 def buscar_cursos_home():
@@ -156,14 +170,85 @@ def buscar_cursos_home():
         cursor.close()
     return jsonify(cursos)
 
-@app.get("/cursos_inscritos/<registro>")
-def buscar_cursos_inscritos(registro: str, cursoId: str):
+@app.post("/cursos_inscritos")
+def buscar_cursos_inscritos():
+    dados = request.get_json(force=True)
+
+    registro = dados["registro"]
+    cursoId = dados["cursoId"]
+
+    conexao = conectar()
+    cursor = conexao.cursor()
+
+    try:
+        cursor.execute(
+            "INSERT INTO cursos_iniciados (usuario_id, id_curso, status) VALUES (%s,%s, %s)",
+            (registro, cursoId, "INICIADO")
+        )
+
+        conexao.commit()
+
+        return jsonify({"mensagem": "Inscrição realizada com sucesso!"}), 201
+    
+    except Exception as e:
+        return jsonify(e)
+    
+    finally:
+        cursor.close()
+        conexao.close()
+
+@app.post("/update_cursos_incritos/<registro>/<cursoId>")
+def update_cursos_inscritos(registro: str, cursoId: str):
+    conexao = conectar()
+    cursor = conexao.cursor()
+
+    try:
+        # Executa o comando SQL para mudar o status de INICIADO para FINALIZADO
+        cursor.execute(
+            "UPDATE cursos_iniciados SET status = %s WHERE usuario_id = %s AND id_curso = %s",
+            ("FINALIZADO", registro, cursoId)
+        )
+
+        # Importante: Sempre que alterar dados (INSERT, UPDATE, DELETE), precisa do commit!
+        conexao.commit()
+
+        # Verifica se alguma linha foi realmente alterada no banco
+        if cursor.rowcount > 0:
+            return jsonify({"mensagem": "Curso finalizado com sucesso!"}), 200
+        else:
+            return jsonify({"erro": "Inscrição não encontrada para este usuário e curso."}), 404
+    
+    except Exception as e:
+        # Se der erro, desfaz qualquer alteração pendente
+        conexao.rollback()
+        print(f"Erro ao atualizar status do curso: {e}")
+        # Converte o erro para string para o Flask conseguir serializar em JSON
+        return jsonify({"erro": str(e)}), 500
+    
+    finally:
+        # Garante que as conexões com o banco sejam fechadas de qualquer forma
+        cursor.close()
+        conexao.close()
+
+@app.get("/equipe")
+def buscar_equipe():
     conexao = conectar()
     cursor = conexao.cursor(dictionary=True)
+    equipe = []
 
-    cursor.execute(
-        "SELECT c.titulo, in.status from cursos_iniciados as in inner join cursos as c on c.id = %s"
-    )
+    try:
+        cursor.execute(
+        "SELECT * from login"
+        )
+        equipe = cursor.fetchall()
+
+        return jsonify(equipe)
+    except Exception as e:
+        return jsonify({e})
+    finally:
+        cursor.close()
+        conexao.close()
+
 
 # =========================================================================
 #  NOVAS ROTAS: GESTÃO DE CERTIFICADOS (SALVAMENTO NO DOCKER + REFERÊNCIA DB)

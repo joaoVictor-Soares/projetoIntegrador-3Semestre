@@ -1,43 +1,80 @@
 // Funcionario.jsx
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useLocation } from "react-router-dom";
 import '../styles/Funcionario.css';
 import { useAuth } from '../context/AuthContext';
+import { useNavigate } from 'react-router-dom';
 
 function Funcionario({ setProgresso }) {
 
   const { usuario } = useAuth();
   const funcionario = usuario;
-  console.log(funcionario)
+  const navigate  = useNavigate();
   const [mostrarSenha, setMostrarSenha] = useState(false);
   const [cursosEmAndamento, setCursosEmAndamento] = useState([]);
+  const [cursosFinalizados, setCursosFinalizados] = useState([]);
   const [mostrarFormulario, setMostrarFormulario] = useState(false); 
   const [nomeNovoCurso, setNomeNovoCurso] = useState("");
-  const handleAdicionarCurso = () => {
-    if (nomeNovoCurso.trim() !== "") {
-      const novoCurso = {
-        id: Date.now(),
-        nome: nomeNovoCurso,
-        progresso: 0 
-      };
+  
+async function cursos_em_andamento() {
+  // Verificação de segurança caso o funcionário ainda não tenha carregado na tela
+  if (!funcionario?.numero_registro) return;
 
-      setCursosEmAndamento([...cursosEmAndamento, novoCurso]);
-      setNomeNovoCurso(""); 
-    } 
-  };
+  try {
+    const response = await fetch(`http://localhost:5000/buscar_cursos_realizados/${funcionario.numero_registro}`);
+    
+    if (response.ok) {
+      const data = await response.json();
+      
+      // Se o seu Flask trouxer a lista dentro de uma matriz/array duplo igual ao login, 
+      // descomente a linha abaixo para limpar os colchetes extras:
+      // const dadosTratados = Array.isArray(data[0]) ? data[0] : data;
+      const dadosTratados = data; // Caso já venha como um array direto de objetos
 
-  const handleProgressoChange = (id, novoValor) => {
+      // 1. Filtra e adiciona apenas os cursos com status "INICIADO"
+      const iniciados = dadosTratados.filter(curso => curso.status === "INICIADO");
+      setCursosEmAndamento(iniciados);
 
-    const cursosAtualizados = cursosEmAndamento.map(curso => 
-      curso.id === id ? { ...curso, progresso: novoValor } : curso
-    );
-    setCursosEmAndamento(cursosAtualizados);
-  };
-  const handleSalvarProgresso = (curso) => {
-    if (setProgresso) setProgresso(curso.progresso); 
-    alert(`Progresso do curso "${curso.nome}" salvo em ${curso.progresso}%!`);
-  };
+      // 2. Filtra e adiciona apenas os cursos com status "FINALIZADO"
+      const finalizados = dadosTratados.filter(curso => curso.status === "FINALIZADO");
+      setCursosFinalizados(finalizados); // Certifique-se de ter esse useState declarado no topo do arquivo
+
+      console.log("Em andamento:", iniciados);
+      console.log("Finalizados:", finalizados);
+
+    } else {
+      console.error("Erro ao buscar os cursos do servidor");
+    }
+  } catch (error) {
+    console.error(error);
+    alert("Erro ao se conectar com o servidor");
+  }
+}
+
+  useEffect(() => {
+    cursos_em_andamento()
+  }, [])
+
+  async function handleSalvarProgresso(id) {
+    try {
+    // Passando o registro e o id do curso direto na URL
+    const response = await fetch(`http://localhost:5000/update_cursos_incritos/${funcionario?.numero_registro}/${id}`, {
+      method: "POST" // Mantendo o método POST que você definiu no decorator
+    });
+
+    const dados = await response.json();
+
+    if (response.ok) {
+      alert(dados.mensagem); // "Curso finalizado com sucesso!"
+      navigate("/certificados");
+    } else {
+      alert(`Erro: ${dados.erro}`);
+    }
+  } catch (error) {
+    console.error("Erro na requisição:", error);
+  }
+  }
 
   return (
     <div className="funcionario-container">
@@ -82,61 +119,52 @@ function Funcionario({ setProgresso }) {
           Cursos em andamento
         </h2>
 
-        <div className="form-adicionar-curso">
-
-          <button 
-            className="btn-abrir-adicionar"
-            onClick={() => setMostrarFormulario(!mostrarFormulario)}
-          >
-            + Adicionar Curso
-          </button>
-
-          {mostrarFormulario && (
-            <>
-              <input 
-                type="text" 
-                placeholder="Nome do curso" 
-                value={nomeNovoCurso}
-                onChange={(e) => setNomeNovoCurso(e.target.value)}
-                className="input-nome-curso"
-              />
-
-              <button 
-                className="btn-ok-adicionar" 
-                onClick={handleAdicionarCurso}
-              >
-                OK
-              </button>
-            </>
-          )}
-        </div>
-
+        {cursosEmAndamento == 0 ? (
+          <div>
+            <h3>NENHUM CURSO EM ANDAMENTO</h3>
+          </div>
+        )
+      :
+      (
         <div className="lista-cursos-cards">
 
           {cursosEmAndamento.map((curso) => (
             <div key={curso.id} className="curso-card-individual">
 
-              <h3>{curso.nome}</h3>
-
-              <span className="curso-porcentagem">
-                {curso.progresso}%
-              </span>
-              
-              <input 
-                type="range" 
-                min="0" 
-                max="100" 
-                value={curso.progresso} 
-                onChange={(e) => handleProgressoChange(curso.id, e.target.value)}
-                className="range-slider-curso"
-              />
+              <h3>{curso.titulo}</h3>
+              <h1>Duração: {curso.duracao} minutos</h1>
               
               <button 
                 className="btn-ok-progresso" 
-                onClick={() => handleSalvarProgresso(curso)}
+                onClick={() => handleSalvarProgresso(curso.id)}
               >
-                OK
+                FINALIZAR CURSO
               </button>
+
+              <a href={curso.link}>Acessar Curso</a>
+
+            </div>
+          ))}
+        </div>
+      )}
+
+      </div>
+
+       <div className="cursos-andamento-section">
+
+        <h2 className="cursos-titulo">
+          Cursos Finalizados
+        </h2>
+
+        <div className="lista-cursos-cards">
+
+          {cursosFinalizados.map((curso) => (
+            <div key={curso.id} className="curso-card-individual">
+
+              <h3>{curso.titulo}</h3>
+              <h1>Duração: {curso.duracao} minutos</h1>
+            
+              <a href={curso.link}>Acessar Curso</a>
 
             </div>
           ))}
