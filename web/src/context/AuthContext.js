@@ -3,6 +3,7 @@ import React, { createContext, useState, useContext, useEffect } from 'react';
 
 const AuthContext = createContext();
 
+
 export const AuthProvider = ({ children }) => {
   // Inicializa o estado lendo o JSON do usuário que foi salvo no localStorage
   const [usuario, setUsuario] = useState(() => {

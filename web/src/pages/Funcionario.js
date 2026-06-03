@@ -43,27 +43,27 @@ function Funcionario({ setProgresso }) {
     <div className="funcionario-container">
 
       <h1 className="perfil-header-title">
-        Funcionário: {funcionario[0]?.name}
+        Funcionário: {funcionario?.name}
       </h1>
 
       <p className="perfil-registro">
-        Número de Registro: {funcionario[0]?.numero_registro}
+        Número de Registro: {funcionario?.numero_registro}
       </p>
       
       <div className="perfil-dados-extra">
 
         <p>
-          <strong>Cargo:</strong> {funcionario[0]?.cargo}
+          <strong>Cargo:</strong> {funcionario?.cargo}
         </p>
 
         <p>
-          <strong>Departamento:</strong> {funcionario[0]?.departamento}
+          <strong>Departamento:</strong> {funcionario?.departamento}
         </p>
 
         <div className="senha-linha">
 
           <p>
-            <strong>Senha:</strong> {mostrarSenha ? funcionario[0]?.password : "••••••••"}
+            <strong>Senha:</strong> {mostrarSenha ? funcionario?.password : "••••••••"}
           </p>
 
           <button 

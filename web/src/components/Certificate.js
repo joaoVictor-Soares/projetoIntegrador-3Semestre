@@ -8,7 +8,7 @@ function Certificate({ certificados, setCertificados }) {
   console.log("Usuário completo do Contexto:", usuario)
   
   // Como o Contexto já entrega o objeto limpo do usuário, pegamos direto sem o [0]
-  const usuarioId = usuario[0]?.numero_registro;
+  const usuarioId = usuario?.numero_registro;
   console.log(usuarioId)
   const [nomeCurso, setNomeCurso] = useState("");
   const [arquivo, setArquivo] = useState(null);

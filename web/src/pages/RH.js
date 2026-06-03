@@ -1,57 +1,68 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import '../styles/RH.css';
 
 // NOVO: Recebemos a prop 'certificados' do App.js
 function RH({ progressoFuncionario, certificados = [] }) {
   const [expandidoId, setExpandidoId] = useState(null);
+  const [equipe, setEquipe] = useState([])
 
-  const equipe = [
-    { 
-      id: 1, 
-      nome: "Breno Dolcinotti", 
-      cargo: "Desenvolvedor Full Stack", 
-      departamento: "Tecnologia da Informação (TI)",
-      email: "breno.dolcinotti@sla.com",
-      cursos: [
-        { nome: "Desenvolvimento Full Stack com React", progresso: progressoFuncionario },
-        { nome: "Arquitetura de Software em Java", progresso: 25 },
-        { nome: "Redes Industriais e Profibus", progresso: 100 }
-      ]
-    },
-    { 
-      id: 2, 
-      nome: "João Victor", 
-      cargo: "Desenvolvedor Front-end", 
-      departamento: "Tecnologia da Informação (TI)",
-      email: "joao.silva@sla.com",
-      cursos: [
-        { nome: "UI/UX Design Avançado", progresso: 70 },
-        { nome: "Acessibilidade Web", progresso: 40 }
-      ]
-    },
-    { 
-      id: 3, 
-      nome: "Anna Karolina", 
-      cargo: "Engenheira de Software", 
-      departamento: "Engenharia",
-      email: "annakarol@sla.com",
-      cursos: [
-        { nome: "Criação de Software", progresso: 20 },
-        { nome: "Como para de ser chata", progresso: 0 }
-      ]
-    },
-    { 
-      id: 4, 
-      nome: "Alice Prado", 
-      cargo: "Escritora", 
-      departamento: "Design",
-      email: "alice.prado@sla.com",
-      cursos: [
-        { nome: "Como escrever em linha reta", progresso: 0 },
-        { nome: "Escreva um livro em 2 dias", progresso: 10 }
-      ]
+  // const equipe = [
+  //   { 
+  //     id: 1, 
+  //     nome: "Breno Dolcinotti", 
+  //     cargo: "Desenvolvedor Full Stack", 
+  //     departamento: "Tecnologia da Informação (TI)",
+  //     email: "breno.dolcinotti@sla.com",
+  //     cursos: [
+  //       { nome: "Desenvolvimento Full Stack com React", progresso: progressoFuncionario },
+  //       { nome: "Arquitetura de Software em Java", progresso: 25 },
+  //       { nome: "Redes Industriais e Profibus", progresso: 100 }
+  //     ]
+  //   },
+  //   { 
+  //     id: 2, 
+  //     nome: "João Victor", 
+  //     cargo: "Desenvolvedor Front-end", 
+  //     departamento: "Tecnologia da Informação (TI)",
+  //     email: "joao.silva@sla.com",
+  //     cursos: [
+  //       { nome: "UI/UX Design Avançado", progresso: 70 },
+  //       { nome: "Acessibilidade Web", progresso: 40 }
+  //     ]
+  //   },
+  //   { 
+  //     id: 3, 
+  //     nome: "Anna Karolina", 
+  //     cargo: "Engenheira de Software", 
+  //     departamento: "Engenharia",
+  //     email: "annakarol@sla.com",
+  //     cursos: [
+  //       { nome: "Criação de Software", progresso: 20 },
+  //       { nome: "Como para de ser chata", progresso: 0 }
+  //     ]
+  //   },
+  //   { 
+  //     id: 4, 
+  //     nome: "Alice Prado", 
+  //     cargo: "Escritora", 
+  //     departamento: "Design",
+  //     email: "alice.prado@sla.com",
+  //     cursos: [
+  //       { nome: "Como escrever em linha reta", progresso: 0 },
+  //       { nome: "Escreva um livro em 2 dias", progresso: 10 }
+  //     ]
+  //   }
+  // ];
+
+  useEffect(() => {
+    buscarEquipe()
+  },[])
+
+  async function buscarEquipe() {
+    try{
+      const response = await fetch("http://localhost:5000/equipe")
     }
-  ];
+  }
 
   const toggleExpandir = (id) => {
     setExpandidoId(expandidoId === id ? null : id);

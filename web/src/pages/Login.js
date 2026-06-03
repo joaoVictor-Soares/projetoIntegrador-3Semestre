@@ -15,40 +15,39 @@ function Login() {
   const [user, setUser] = useState([]);
   const [erro, setErro] = useState("")
 
-  const handleLogin = async(e) => {
-    e.preventDefault();
+const handleLogin = async (e) => {
+  e.preventDefault();
 
-    try{
+  try {
+    const response = await fetch(`http://localhost:5000/login/${registro}/${senha}`);
 
-      const response = await fetch(`http://localhost:5000/login/${registro}/${senha}`);
+    if (response.ok) {
+      const data = await response.json();
 
-      if(response.ok){
+      if (data.status === 201) {
+        const usuarioObjeto = data.user[0]; 
+        console.log("Usuário logado:", usuarioObjeto);
 
-        const data = await response.json();
+        setUser(usuarioObjeto);
+        loginGlobal(usuarioObjeto);
 
-        if(data.status === 201){
-
-          console.log(data.user);
-
-          const usuarioArray = data.user;
-          console.log(usuarioArray)
-
-          setUser(usuarioArray);
-
-          loginGlobal(usuarioArray)
-         
+        if (usuarioObjeto?.cargo === "RH") {
+          console.log("Acesso administrativo detectado (RH). Redirecionando...");
+          navigate("/rh");
+        } else {
+          console.log("Acesso padrão detectado (ADS/Outros). Redirecionando...");
           navigate("/home");
         }
-        else{
-          setErro("Usuário ou senha inválidos");
-        }
+
+      } else {
+        setErro("Usuário ou senha inválidos");
       }
-
-    }catch (error){
-
-      console.log(error);
     }
-  };
+  } catch (error) {
+    console.log("Erro ao tentar fazer login:", error);
+    setErro("Erro de conexão com o servidor.");
+  }
+};
 
   const handleRegistroChange = (e) => {
 

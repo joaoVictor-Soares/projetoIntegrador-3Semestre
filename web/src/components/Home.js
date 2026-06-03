@@ -46,6 +46,10 @@ async function buscarPorPalavra(e) {
   }
 }
 
+async function inscrever(id) {
+  
+}
+
   console.log(cursos)
 
   return (
