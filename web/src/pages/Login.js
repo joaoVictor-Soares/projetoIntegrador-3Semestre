@@ -3,54 +3,51 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import '../styles/Login.css'; 
+import { useAuth } from "../context/AuthContext";
 
-function Login({ setUserRole }) {
+function Login() {
 
   const navigate = useNavigate();
+  const { loginGlobal } = useAuth();
   
   const [registro, setRegistro] = useState("");
   const [senha, setSenha] = useState("");
   const [user, setUser] = useState([]);
+  const [erro, setErro] = useState("")
 
-  useEffect(() => {
-    setUserRole("user");
-    localStorage.removeItem("userRole");
-  }, [setUserRole]);
+const handleLogin = async (e) => {
+  e.preventDefault();
 
-  const handleLogin = async(e) => {
+  try {
+    const response = await fetch(`http://localhost:5000/login/${registro}/${senha}`);
 
-    e.preventDefault();
+    if (response.ok) {
+      const data = await response.json();
 
-    try{
+      if (data.status === 201) {
+        const usuarioObjeto = data.user[0]; 
+        console.log("Usuário logado:", usuarioObjeto);
 
-      const response = await fetch(`http://localhost:5000/login/${registro}/${senha}`);
+        setUser(usuarioObjeto);
+        loginGlobal(usuarioObjeto);
 
-      if(response.ok){
-
-        const data = await response.json();
-
-        if(data.status == 201){
-
-          console.log(data.user);
-
-          const usuarioArray = [data.user];
-
-          setUser(usuarioArray);
-
-          // SALVA NO LOCALSTORAGE
-          localStorage.setItem("funcionario", JSON.stringify(usuarioArray));
-
-          navigate("/funcionario", {
-            state: { user: usuarioArray }
-          });
+        if (usuarioObjeto?.cargo === "RH") {
+          console.log("Acesso administrativo detectado (RH). Redirecionando...");
+          navigate("/rh");
+        } else {
+          console.log("Acesso padrão detectado (ADS/Outros). Redirecionando...");
+          navigate("/home");
         }
+
+      } else {
+        setErro("Usuário ou senha inválidos");
       }
-
-    }catch (error){
-
-      console.log(error);
     }
-  };
+  } catch (error) {
+    console.log("Erro ao tentar fazer login:", error);
+    setErro("Erro de conexão com o servidor.");
+  }
+};
 
   const handleRegistroChange = (e) => {
 
@@ -67,6 +64,10 @@ function Login({ setUserRole }) {
       <h2 className="login-welcome">
         Bem vindo! Faça seu login:
       </h2>
+
+      <div>
+        {erro}
+      </div>
       
       <form onSubmit={handleLogin} style={{ width: '100%' }}>
         

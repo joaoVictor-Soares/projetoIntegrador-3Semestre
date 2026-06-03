@@ -6,16 +6,32 @@ function NovoColaborador() {
   const [registro, setRegistro] = useState("");
   const [cargo, setCargo] = useState("");
   const [departamento, setDepartamento] = useState("");
-  
-  // NOVO: Estado para guardar a senha
   const [senha, setSenha] = useState(""); 
 
-  const handleCadastrar = (e) => {
+  const handleCadastrar = async(e) => {
     e.preventDefault();
     
-    alert(`Colaborador(a) ${nome} cadastrado(a) com sucesso no sistema!`);
+      try {
+       const response = await fetch("http://localhost:5000/cadastro", {
+        method : "POST",
+        headers : {"Content-Type" : "application/json"},
+        body : JSON.stringify({
+          "username": registro,
+          "password": senha, 
+          "name": nome,
+          "numero_registro": registro,
+          "cargo": cargo,
+          "departamento": departamento
+        })
+      })
+
+      if(response.ok){
+        alert("Novo colaborador cadastrado com sucesso")
+      }
+    }catch{
+      console.log("erro")
+    }
     
-    // Limpa o formulário após salvar, incluindo a senha
     setNome("");
     setRegistro("");
     setCargo("");
@@ -45,12 +61,12 @@ function NovoColaborador() {
             <div className="form-group">
               <label>Número de Registro</label>
               <input 
-                type="text" 
+                type="number" 
                 placeholder="Apenas números" 
                 value={registro}
                 onChange={(e) => setRegistro(e.target.value.replace(/\D/g, ''))}
                 required
-                maxLength={8}
+                maxLength={6}
               />
             </div>
           </div>
