@@ -57,11 +57,7 @@ async function cursos_em_andamento() {
     try {
     // Passando o registro e o id do curso direto na URL
     const response = await fetch(`http://10.110.12.90:5000/update_cursos_incritos/${funcionario?.numero_registro}/${id}`, {
-<<<<<<< HEAD
       method: "POST" // Mantendo o método POST que você definiu no decorator
-=======
-      method: "POST" 
->>>>>>> e98cdc8de449050b6417bc5603ff6c2cfbce0d8f
     });
 
     const dados = await response.json();

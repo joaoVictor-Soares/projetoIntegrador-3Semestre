@@ -59,11 +59,8 @@ function NavBar() {
         </NavLink>
       </div>
 
-<<<<<<< HEAD
       <button onClick={logoutGlobal} className='btn-voltar-login'><NavLink to="/">Sair da Conta</NavLink></button>
 
-=======
->>>>>>> e98cdc8de449050b6417bc5603ff6c2cfbce0d8f
     </nav>
   );
 }
