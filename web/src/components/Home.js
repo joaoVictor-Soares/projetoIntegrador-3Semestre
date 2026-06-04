@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import '../styles/Home.css'; 
 import { useAuth } from '../context/AuthContext';
+import { useNavigate } from 'react-router-dom';
 
 function Home() {
   const { usuario } = useAuth()
   const usuarioId = usuario?.numero_registro;
+  const navigate = useNavigate()
   const [cursos, setCursos] = useState([])
   const [termoPalavra, setTermoPalavra] = useState('')
   const [naoLocalizado, setNaoLocalizado] = useState(false)
@@ -16,7 +18,7 @@ function Home() {
 
   async function buscar_cursos() {
      try{
-      const response = await fetch("http://10.110.12.90:5000/cursos_home")
+      const response = await fetch("http://localhost:5000/cursos_home")
       const data = await response.json()
       setCursos(data)
     }catch{
@@ -34,7 +36,7 @@ async function buscarPorPalavra(e) {
 
   setCursos([]);
   try {
-    const response = await fetch(`http://10.110.12.90:5000/buscar_cursos_palavras/${palavra}`);
+    const response = await fetch(`http://localhost:5000/buscar_cursos_palavras/${palavra}`);
     const data = await response.json();
     if(data.resultado){
       setNaoLocalizado(true)
@@ -51,7 +53,7 @@ async function buscarPorPalavra(e) {
 
 async function inscrever(id) {
   try {
-       const response = await fetch("http://10.110.12.90:5000/cursos_inscritos", {
+       const response = await fetch("http://localhost:5000/cursos_inscritos", {
         method : "POST",
         headers : {"Content-Type" : "application/json"},
         body : JSON.stringify({
@@ -62,6 +64,7 @@ async function inscrever(id) {
 
       if(response.ok){
         alert("Inscrição realizada com sucesso")
+        navigate("/funcionario");
       }
     }catch{
       console.log("erro")
@@ -98,8 +101,12 @@ async function inscrever(id) {
             <div className="curso-novo-card" key={c.id || c.titulo}>
               <h4>{c.titulo}</h4>
               <p className="curso-info">{c.resumo}</p>
-              <span className="curso-carga">{c.duracao}</span>
+              
+              {/* Usando a nova classe para mudar a cor da Duração */}
+              <span className="curso-duracao">Duração: {c.duracao} minutos</span>
+              
               <span className="curso-carga">{c.nivel}</span>
+              
               <button className="btn-inscrever" onClick={() => inscrever(c.id)}>Inscrever-se</button>
               <br></br>
               <a className="btn-inscrever" href={c.link} target="_blank" rel="noreferrer">Ver Curso</a>

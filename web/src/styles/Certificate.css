@@ -135,3 +135,18 @@
   margin: 0 auto; 
   justify-content: center;
 }
+
+/* --- TÍTULO DO CERTIFICADO COM TRUNCAMENTO --- */
+.cert-nome {
+  color: #85a5ff;
+  margin-bottom: 10px;
+  font-size: 1.1rem;
+  
+  /* As regras mágicas para não quebrar a linha: */
+  white-space: nowrap;       /* Impede o texto de pular para a linha de baixo */
+  overflow: hidden;          /* Esconde tudo o que não couber na largura do cartão */
+  text-overflow: ellipsis;   /* Adiciona os "..." no final do texto cortado */
+  
+  display: block;
+  max-width: 100%;           /* Garante que respeita o limite do cartão */
+}

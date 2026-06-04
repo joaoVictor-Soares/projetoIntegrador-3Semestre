@@ -22,7 +22,7 @@ async function cursos_em_andamento() {
   if (!funcionario?.numero_registro) return;
 
   try {
-    const response = await fetch(`http://10.110.12.90:5000/buscar_cursos_realizados/${funcionario.numero_registro}`);
+    const response = await fetch(`http://localhost:5000/buscar_cursos_realizados/${funcionario.numero_registro}`);
     
     if (response.ok) {
       const data = await response.json();
@@ -56,7 +56,7 @@ async function cursos_em_andamento() {
   async function handleSalvarProgresso(id) {
     try {
     // Passando o registro e o id do curso direto na URL
-    const response = await fetch(`http://10.110.12.90:5000/update_cursos_incritos/${funcionario?.numero_registro}/${id}`, {
+    const response = await fetch(`http://localhost:5000/update_cursos_incritos/${funcionario?.numero_registro}/${id}`, {
       method: "POST" // Mantendo o método POST que você definiu no decorator
     });
 
