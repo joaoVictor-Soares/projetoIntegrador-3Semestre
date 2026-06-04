@@ -160,3 +160,12 @@ a.btn-inscrever {
   box-sizing: border-box; /* Evita que ele fique mais largo que o cartão */
   color: #1a1b1e; /* Garante a mesma cor de texto do outro botão */
 }
+
+/* --- COR DE DESTAQUE PARA A DURAÇÃO (HOME) --- */
+.curso-duracao {
+  color: #43b581; /* Verde claro que criámos antes. Se quiser laranja, troque para #faa61a */
+  font-weight: bold;
+  font-size: 0.95rem;
+  display: block; /* Garante que fica na sua própria linha */
+  margin-bottom: 8px;
+}

@@ -98,8 +98,12 @@ async function inscrever(id) {
             <div className="curso-novo-card" key={c.id || c.titulo}>
               <h4>{c.titulo}</h4>
               <p className="curso-info">{c.resumo}</p>
-              <span className="curso-carga">{c.duracao}</span>
+              
+              {/* Usando a nova classe para mudar a cor da Duração */}
+              <span className="curso-duracao">Duração: {c.duracao} minutos</span>
+              
               <span className="curso-carga">{c.nivel}</span>
+              
               <button className="btn-inscrever" onClick={() => inscrever(c.id)}>Inscrever-se</button>
               <br></br>
               <a className="btn-inscrever" href={c.link} target="_blank" rel="noreferrer">Ver Curso</a>

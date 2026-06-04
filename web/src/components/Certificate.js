@@ -123,20 +123,35 @@ function Certificate({ certificados, setCertificados }) {
   };
 
   const abrirCertificado = (link) => {
-  if (!link) {
-    alert("Erro: Link do certificado não encontrado.");
-    return;
-  }
+    if (!link) {
+      alert("Erro: Link do certificado não encontrado.");
+      return;
+    }
 
-  try {
-    // No React Web, usamos o window.open para abrir o link em uma nova aba.
-    // O '_blank' garante que a aba atual do seu sistema não seja fechada.
-    window.open(link, '_blank');
-  } catch (error) {
-    console.error(error);
-    alert("Erro: Formato de link inválido ou inacessível.");
-  }
-};
+    try {
+      let urlFinal = link;
+
+      // 1. O SEGREDO: Se o Flask enviar "localhost" ou "127.0.0.1", nós trocamos pelo seu IP!
+      urlFinal = urlFinal.replace("localhost", "10.110.12.90");
+      urlFinal = urlFinal.replace("127.0.0.1", "10.110.12.90");
+
+      // 2. Garantir que o link não quebra
+      if (!urlFinal.startsWith("http")) {
+        // Se vier só um caminho (ex: /api/certificados...)
+        if (urlFinal.startsWith("/")) {
+          urlFinal = `http://10.110.12.90:5000${urlFinal}`;
+        } else {
+          // Se vier "10.110.12.90:5000/..." sem o http
+          urlFinal = `http://${urlFinal}`;
+        }
+      }
+
+      window.open(urlFinal, '_blank');
+    } catch (error) {
+      console.error(error);
+      alert("Erro: Formato de link inválido ou inacessível.");
+    }
+  };
 
   return (
     <div className="dashboard-container">
@@ -198,7 +213,12 @@ function Certificate({ certificados, setCertificados }) {
             <div key={cert.id} className="card">
               {/* Adapte as chaves abaixo (nome, nome_original, url_download) 
                   de acordo com o JSON que o seu Flask retorna no GET */}
-              <h3 style={{ color: '#85a5ff', marginBottom: '10px' }}>{cert.nome_original || cert.nome}</h3>
+              <h3 
+                className="cert-nome" 
+                title={cert.nome_original || cert.nome}
+              >
+                {cert.nome_original || cert.nome}
+              </h3>
               
               <div className="user-info">
                 <p style={{ marginBottom: '15px' }}>

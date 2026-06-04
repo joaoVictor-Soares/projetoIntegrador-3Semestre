@@ -1,14 +1,11 @@
+/* --- ALINHAMENTO DA BARRA --- */
 .navbar {
-  background-color: #85a5ff;
-  width: 100%;
-  margin: 0;
-  padding: 1.2rem 0;
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
-  box-sizing: border-box;
-  position: relative;
+  background-color: #85a5ff; 
+  padding: 15px 30px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15); /* Pode manter a sombra, fica lindo! */
 }
 
 .navbar-links {
