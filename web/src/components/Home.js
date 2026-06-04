@@ -16,7 +16,7 @@ function Home() {
 
   async function buscar_cursos() {
      try{
-      const response = await fetch("http://localhost:5000/cursos_home")
+      const response = await fetch("http://10.110.12.90:5000/cursos_home")
       const data = await response.json()
       setCursos(data)
     }catch{
@@ -34,7 +34,7 @@ async function buscarPorPalavra(e) {
 
   setCursos([]);
   try {
-    const response = await fetch(`http://localhost:5000/buscar_cursos_palavras/${palavra}`);
+    const response = await fetch(`http://10.110.12.90:5000/buscar_cursos_palavras/${palavra}`);
     const data = await response.json();
     if(data.resultado){
       setNaoLocalizado(true)
@@ -51,7 +51,7 @@ async function buscarPorPalavra(e) {
 
 async function inscrever(id) {
   try {
-       const response = await fetch("http://localhost:5000/cursos_inscritos", {
+       const response = await fetch("http://10.110.12.90:5000/cursos_inscritos", {
         method : "POST",
         headers : {"Content-Type" : "application/json"},
         body : JSON.stringify({

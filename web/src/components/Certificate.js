@@ -56,7 +56,7 @@ function Certificate({ certificados, setCertificados }) {
     }
 
     try {
-      const response = await fetch(`http://localhost:5000/api/certificados?usuario_id=${usuarioId}`);
+      const response = await fetch(`http://10.110.12.90:5000/api/certificados?usuario_id=${usuarioId}`);
       const dados = await response.json();
 
       if (response.ok) {
@@ -92,7 +92,7 @@ function Certificate({ certificados, setCertificados }) {
 
     try {
       // 1. CORRIGIDO: Alterado de hrrp:// para http://
-      const response = await fetch('http://localhost:5000/api/certificados/upload', {
+      const response = await fetch('http://10.110.12.90:5000/api/certificados/upload', {
         method: 'POST',
         body: formData
       });
@@ -123,8 +123,20 @@ function Certificate({ certificados, setCertificados }) {
   };
 
   const abrirCertificado = (link) => {
+  if (!link) {
+    alert("Erro: Link do certificado não encontrado.");
+    return;
+  }
+
+  try {
+    // No React Web, usamos o window.open para abrir o link em uma nova aba.
+    // O '_blank' garante que a aba atual do seu sistema não seja fechada.
     window.open(link, '_blank');
-  };
+  } catch (error) {
+    console.error(error);
+    alert("Erro: Formato de link inválido ou inacessível.");
+  }
+};
 
   return (
     <div className="dashboard-container">

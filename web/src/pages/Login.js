@@ -19,7 +19,7 @@ const handleLogin = async (e) => {
   e.preventDefault();
 
   try {
-    const response = await fetch(`http://localhost:5000/login/${registro}/${senha}`);
+    const response = await fetch(`http://10.110.12.90:5000/login/${registro}/${senha}`);
 
     if (response.ok) {
       const data = await response.json();

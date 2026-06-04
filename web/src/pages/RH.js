@@ -20,7 +20,7 @@ function RH({ progressoFuncionario, certificados, setCertificados }) {
 
   async function buscarEquipe() {
     try {
-      const response = await fetch("http://localhost:5000/equipe");
+      const response = await fetch("http://10.110.12.90:5000/equipe");
       if (response.ok) {
         const data = await response.json();
         const dadosTratados = Array.isArray(data[0]) ? data[0] : data;
@@ -43,7 +43,7 @@ function RH({ progressoFuncionario, certificados, setCertificados }) {
     }
 
     try {
-      const response = await fetch(`http://localhost:5000/buscar_cursos_realizados/${expandidoId}`);
+      const response = await fetch(`http://10.110.12.90:5000/buscar_cursos_realizados/${expandidoId}`);
       
       if (response.ok) {
         const data = await response.json();
@@ -72,7 +72,7 @@ function RH({ progressoFuncionario, certificados, setCertificados }) {
 
   const buscarCertificados = async () => {
     try {
-      const response = await fetch(`http://localhost:5000/api/certificados?usuario_id=${expandidoId}`);
+      const response = await fetch(`http://10.110.12.90:5000/api/certificados?usuario_id=${expandidoId}`);
       const dados = await response.json();
 
       if (response.ok) {

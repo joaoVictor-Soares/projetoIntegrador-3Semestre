@@ -161,7 +161,7 @@ def buscar_cursos_home():
     cursos = []
 
     try:
-        cursor.execute("SELECT * from cursos ORDER BY RAND() LIMIT 3")
+        cursor.execute("SELECT * from cursos ORDER BY RAND() LIMIT 3 ")
         cursos = cursor.fetchall()
     except Exception as e:
         return jsonify({"erro": str(e)})

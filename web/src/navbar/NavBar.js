@@ -1,11 +1,13 @@
 import React from 'react';
-import { NavLink } from 'react-router-dom'; 
+import { href, NavLink } from 'react-router-dom'; 
 import '../styles/NavBar.css'; 
 import { useAuth } from '../context/AuthContext';
+import { useNavigate } from 'react-router-dom';
 
 function NavBar() {
   // 1. Puxamos o usuario do Contexto Global
   const { usuario, logoutGlobal } = useAuth();
+  const navigate = useNavigate();
 
   // Se não houver usuário logado (ex: na tela de Login), a barra não aparece
   if (!usuario) {
@@ -50,7 +52,8 @@ function NavBar() {
         Olá, <strong>{usuario?.name}</strong>
       </div>
 
-      <li><NavLink to="/" onClick={logoutGlobal}>Sair da conta</NavLink></li>
+      <button onClick={logoutGlobal} className='btn-voltar-login'><NavLink to="/">Sair da Conta</NavLink></button>
+
     </nav>
   );
 }
