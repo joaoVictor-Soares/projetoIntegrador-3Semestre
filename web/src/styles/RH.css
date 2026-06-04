@@ -341,3 +341,96 @@
   background-color: #85a5ff;
   color: #1a1b1e;
 }
+
+/* --- CARDS DE CURSOS FINALIZADOS (PAINEL RH) --- */
+
+.card-rh-finalizado {
+  background-color: #36393f;
+  border-left: 5px solid #43b581; /* Borda verde de sucesso */
+  border-radius: 8px;
+  padding: 15px;
+  margin-bottom: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.15);
+}
+
+.badge-rh-concluido {
+  display: inline-block;
+  background-color: rgba(67, 181, 129, 0.2);
+  color: #43b581;
+  font-size: 0.75rem;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-weight: bold;
+  text-transform: uppercase;
+  align-self: flex-start; /* Mantém a etiqueta pequena à esquerda */
+}
+
+.titulo-rh-finalizado {
+  color: #ffffff;
+  font-size: 1.1rem;
+  margin: 0;
+}
+
+.duracao-rh-finalizado {
+  color: #b9bbbe;
+  font-size: 0.95rem;
+  margin: 0;
+  font-weight: 500;
+}
+
+.link-rh-curso {
+  color: #85a5ff; /* Azul padrão do sistema */
+  text-decoration: none;
+  font-size: 0.9rem;
+  font-weight: bold;
+  align-self: flex-start;
+  transition: color 0.2s ease;
+}
+
+.link-rh-curso:hover {
+  color: #ffffff;
+  text-decoration: underline;
+}
+
+/* --- CARDS DE CURSOS INICIADOS (PAINEL RH) --- */
+
+.card-rh-iniciado {
+  background-color: #36393f;
+  border-left: 5px solid #faa61a; /* Borda laranja de andamento */
+  border-radius: 8px;
+  padding: 15px;
+  margin-bottom: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.15);
+}
+
+.badge-rh-andamento {
+  display: inline-block;
+  background-color: rgba(250, 166, 26, 0.2); /* Fundo laranja transparente */
+  color: #faa61a; /* Texto laranja */
+  font-size: 0.75rem;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-weight: bold;
+  text-transform: uppercase;
+  align-self: flex-start;
+}
+
+.titulo-rh-iniciado {
+  color: #ffffff;
+  font-size: 1.1rem;
+  margin: 0;
+}
+
+/* Podemos reaproveitar as cores de texto cinza e o link azul que criámos antes */
+.duracao-rh-iniciado {
+  color: #b9bbbe;
+  font-size: 0.95rem;
+  margin: 0;
+  font-weight: 500;
+}

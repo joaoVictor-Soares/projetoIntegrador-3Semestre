@@ -22,15 +22,12 @@ async function cursos_em_andamento() {
   if (!funcionario?.numero_registro) return;
 
   try {
-    const response = await fetch(`http://localhost:5000/buscar_cursos_realizados/${funcionario.numero_registro}`);
+    const response = await fetch(`http://10.110.12.90:5000/buscar_cursos_realizados/${funcionario.numero_registro}`);
     
     if (response.ok) {
       const data = await response.json();
       
-      // Se o seu Flask trouxer a lista dentro de uma matriz/array duplo igual ao login, 
-      // descomente a linha abaixo para limpar os colchetes extras:
-      // const dadosTratados = Array.isArray(data[0]) ? data[0] : data;
-      const dadosTratados = data; // Caso já venha como um array direto de objetos
+      const dadosTratados = data; 
 
       // 1. Filtra e adiciona apenas os cursos com status "INICIADO"
       const iniciados = dadosTratados.filter(curso => curso.status === "INICIADO");
@@ -38,7 +35,7 @@ async function cursos_em_andamento() {
 
       // 2. Filtra e adiciona apenas os cursos com status "FINALIZADO"
       const finalizados = dadosTratados.filter(curso => curso.status === "FINALIZADO");
-      setCursosFinalizados(finalizados); // Certifique-se de ter esse useState declarado no topo do arquivo
+      setCursosFinalizados(finalizados); 
 
       console.log("Em andamento:", iniciados);
       console.log("Finalizados:", finalizados);
@@ -59,14 +56,14 @@ async function cursos_em_andamento() {
   async function handleSalvarProgresso(id) {
     try {
     // Passando o registro e o id do curso direto na URL
-    const response = await fetch(`http://localhost:5000/update_cursos_incritos/${funcionario?.numero_registro}/${id}`, {
-      method: "POST" // Mantendo o método POST que você definiu no decorator
+    const response = await fetch(`http://10.110.12.90:5000/update_cursos_incritos/${funcionario?.numero_registro}/${id}`, {
+      method: "POST" 
     });
 
     const dados = await response.json();
 
     if (response.ok) {
-      alert(dados.mensagem); // "Curso finalizado com sucesso!"
+      alert(dados.mensagem); 
       navigate("/certificados");
     } else {
       alert(`Erro: ${dados.erro}`);
@@ -132,7 +129,8 @@ async function cursos_em_andamento() {
             <div key={curso.id} className="curso-card-individual">
 
               <h3>{curso.titulo}</h3>
-              <h1>Duração: {curso.duracao} minutos</h1>
+              {/* Trocado de h1 para p para não ficar gigante */}
+              <p className="duracao-finalizado">Duração: {curso.duracao} minutos</p>
               
               <button 
                 className="btn-ok-progresso" 
@@ -141,7 +139,10 @@ async function cursos_em_andamento() {
                 FINALIZAR CURSO
               </button>
 
-              <a href={curso.link}>Acessar Curso</a>
+              {/* Link atualizado para ficar bonito e abrir noutra aba */}
+              <a href={curso.link} className="link-acessar-curso" target="_blank" rel="noreferrer">
+                Acessar Curso ➜
+              </a>
 
             </div>
           ))}
@@ -156,15 +157,22 @@ async function cursos_em_andamento() {
           Cursos Finalizados
         </h2>
 
+        {/* NOVA LISTA COM A ESTILIZAÇÃO VERDE */}
         <div className="lista-cursos-cards">
 
           {cursosFinalizados.map((curso) => (
-            <div key={curso.id} className="curso-card-individual">
+            <div key={curso.id} className="card-finalizado">
 
-              <h3>{curso.titulo}</h3>
-              <h1>Duração: {curso.duracao} minutos</h1>
+              <div>
+                <span className="badge-concluido">✓ Concluído</span>
+                <h3 className="titulo-finalizado">{curso.titulo}</h3>
+              </div>
+              
+              <p className="duracao-finalizado">Duração: {curso.duracao} minutos</p>
             
-              <a href={curso.link}>Acessar Curso</a>
+              <a href={curso.link} className="link-acessar-curso" target="_blank" rel="noreferrer">
+                Acessar Curso ➜
+              </a>
 
             </div>
           ))}

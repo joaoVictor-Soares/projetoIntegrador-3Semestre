@@ -56,7 +56,7 @@ function Certificate({ certificados, setCertificados }) {
     }
 
     try {
-      const response = await fetch(`http://localhost:5000/api/certificados?usuario_id=${usuarioId}`);
+      const response = await fetch(`http://10.110.12.90:5000/api/certificados?usuario_id=${usuarioId}`);
       const dados = await response.json();
 
       if (response.ok) {
@@ -92,7 +92,7 @@ function Certificate({ certificados, setCertificados }) {
 
     try {
       // 1. CORRIGIDO: Alterado de hrrp:// para http://
-      const response = await fetch('http://localhost:5000/api/certificados/upload', {
+      const response = await fetch('http://10.110.12.90:5000/api/certificados/upload', {
         method: 'POST',
         body: formData
       });

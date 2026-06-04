@@ -20,7 +20,7 @@ function RH({ progressoFuncionario, certificados, setCertificados }) {
 
   async function buscarEquipe() {
     try {
-      const response = await fetch("http://localhost:5000/equipe");
+      const response = await fetch("http://10.110.12.90:5000/equipe");
       if (response.ok) {
         const data = await response.json();
         const dadosTratados = Array.isArray(data[0]) ? data[0] : data;
@@ -43,7 +43,7 @@ function RH({ progressoFuncionario, certificados, setCertificados }) {
     }
 
     try {
-      const response = await fetch(`http://localhost:5000/buscar_cursos_realizados/${expandidoId}`);
+      const response = await fetch(`http://10.110.12.90:5000/buscar_cursos_realizados/${expandidoId}`);
       
       if (response.ok) {
         const data = await response.json();
@@ -72,7 +72,7 @@ function RH({ progressoFuncionario, certificados, setCertificados }) {
 
   const buscarCertificados = async () => {
     try {
-      const response = await fetch(`http://localhost:5000/api/certificados?usuario_id=${expandidoId}`);
+      const response = await fetch(`http://10.110.12.90:5000/api/certificados?usuario_id=${expandidoId}`);
       const dados = await response.json();
 
       if (response.ok) {
@@ -134,28 +134,43 @@ function RH({ progressoFuncionario, certificados, setCertificados }) {
                       
                       <hr style={{ borderColor: '#444', margin: '15px 0' }} />
 
-                      <h2>CURSOS INICIADOS</h2>
+                      <h2 style={{ marginTop: '20px', marginBottom: '15px', fontSize: '1.2rem', color: '#fff' }}>CURSOS INICIADOS</h2>
+                      
                       {cursosEmAndamento.length === 0 ? (
                         <p style={{ color: '#888', fontStyle: 'italic' }}>Nenhum curso iniciado.</p>
                       ) : (
                         cursosEmAndamento.map((cea) => (
-                          <div key={cea.id} className="curso-card-individual" style={{ padding: '10px', background: '#1a1a1a', borderRadius: '4px', marginBottom: '8px' }}>
-                            <h3 style={{ margin: '0 0 5px 0', color: '#ffd591' }}>{cea.titulo}</h3>
-                            <p style={{ margin: '0 0 5px 0', fontSize: '14px' }}>Duração: {cea.duracao} minutos</p>
-                            <a href={cea.link} target="_blank" rel="noreferrer" style={{ color: '#1890ff' }}>Acessar Curso</a>
+                          <div key={cea.id} className="card-rh-iniciado">
+                            
+                            <span className="badge-rh-andamento">⏳ Em Andamento</span>
+                            <h3 className="titulo-rh-iniciado">{cea.titulo}</h3>
+                            <p className="duracao-rh-iniciado">Duração: {cea.duracao} minutos</p>
+                            
+                            {/* Reutilizamos a classe do link que criámos nos finalizados, pois o azul é o mesmo */}
+                            <a href={cea.link} className="link-rh-curso" target="_blank" rel="noreferrer">
+                              Acessar Curso ➜
+                            </a>
+                            
                           </div>
                         ))
                       )}
 
-                      <h2 style={{ marginTop: '20px' }}>CURSOS FINALIZADOS</h2>
+                      <h2 style={{ marginTop: '25px', marginBottom: '15px', fontSize: '1.2rem', color: '#fff' }}>CURSOS FINALIZADOS</h2>
+                      
                       {cursosFinalizados.length === 0 ? (
                         <p style={{ color: '#888', fontStyle: 'italic' }}>Nenhum curso finalizado ainda.</p>
                       ) : (
                         cursosFinalizados.map((cea) => (
-                          <div key={cea.id} className="curso-card-individual" style={{ padding: '10px', background: '#1a1a1a', borderRadius: '4px', marginBottom: '8px' }}>
-                            <h3 style={{ margin: '0 0 5px 0', color: '#b7eb8f' }}>{cea.titulo}</h3>
-                            <p style={{ margin: '0 0 5px 0', fontSize: '14px' }}>Duração: {cea.duracao} minutos</p>
-                            <a href={cea.link} target="_blank" rel="noreferrer" style={{ color: '#1890ff' }}>Acessar Curso</a>
+                          <div key={cea.id} className="card-rh-finalizado">
+                            
+                            <span className="badge-rh-concluido">✓ Concluído</span>
+                            <h3 className="titulo-rh-finalizado">{cea.titulo}</h3>
+                            <p className="duracao-rh-finalizado">Duração: {cea.duracao} minutos</p>
+                            
+                            <a href={cea.link} className="link-rh-curso" target="_blank" rel="noreferrer">
+                              Acessar Curso ➜
+                            </a>
+                            
                           </div>
                         ))
                       )}
