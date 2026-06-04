@@ -102,7 +102,7 @@ async function inscrever(id) {
               <span className="curso-carga">{c.nivel}</span>
               <button className="btn-inscrever" onClick={() => inscrever(c.id)}>Inscrever-se</button>
               <br></br>
-              <a className="btn-inscrever" href={c.link}>Ver Curso</a>
+              <a className="btn-inscrever" href={c.link} target="_blank" rel="noreferrer">Ver Curso</a>
             </div>
           ))}
          </div>

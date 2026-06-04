@@ -66,18 +66,15 @@
 
 /* --- TAG ADMINISTRADOR (CANTO ESQUERDO) --- */
 .admin-tag {
-  position: absolute;
-  left: 30px; /* Mesma distância que o botão da direita para manter simetria */
-  
+  background-color: rgba(0, 0, 0, 0.15);
   color: #ffffff;
-  font-size: 0.9rem;
+  padding: 8px 15px;
+  border-radius: 6px;
   font-weight: bold;
-  text-transform: uppercase; /* Deixa em caixa alta para dar um ar mais oficial */
-  letter-spacing: 1px;
-  background-color: rgba(0, 0, 0, 0.2); /* Um fundo sutil para destacar */
-  padding: 5px 12px;
-  border-radius: 4px;
-  pointer-events: none; /* Garante que o texto não seja clicável */
+  font-size: 0.9rem;
+  
+  /* NOVO: Número positivo empurra o botão para baixo */
+  transform: translateY(1px); 
 }
 
 /* --- ESTILOS DOS LINKS DO MENU --- */
@@ -102,4 +99,47 @@
   background-color: #85a5ff; /* Fundo azul preenchido */
   color: #1a1b1e; /* Texto escuro para dar contraste */
   font-weight: bold;
+}
+
+/* --- ALINHAMENTO DA BARRA --- */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #85a5ff; /* O seu azul padrão */
+  padding: 15px 30px;
+}
+
+.navbar-left, .navbar-right {
+  flex: 1; /* Garante que os dois lados tenham o mesmo tamanho */
+  display: flex;
+}
+
+.navbar-left {
+  justify-content: flex-start;
+}
+
+.navbar-right {
+  justify-content: flex-end; /* Empurra o botão de sair totalmente para a direita */
+}
+
+/* --- BOTÃO DE SAIR --- */
+.btn-sair {
+  background-color: transparent; 
+  color: #1a1b1e; /* Letra escura combinando com a barra azul */
+  border: 2px solid #1a1b1e; 
+  padding: 8px 18px;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-decoration: none; /* Como é um NavLink, remove o sublinhado */
+}
+
+.btn-sair:hover {
+  background-color: #ed4245; /* Fundo vermelho de alerta */
+  border-color: #ed4245; 
+  color: #ffffff; 
+  transform: translateY(-2px); 
 }

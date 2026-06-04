@@ -151,3 +151,12 @@
 .btn-inscrever:hover {
   opacity: 0.9;
 }
+
+/* --- CORREÇÃO PARA O LINK "VER CURSO" --- */
+a.btn-inscrever {
+  display: block; /* Faz o link respeitar o tamanho do cartão */
+  text-align: center; /* Centraliza o texto igual ao <button> */
+  text-decoration: none; /* Remove o sublinhado */
+  box-sizing: border-box; /* Evita que ele fique mais largo que o cartão */
+  color: #1a1b1e; /* Garante a mesma cor de texto do outro botão */
+}

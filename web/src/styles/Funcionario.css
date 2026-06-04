@@ -363,3 +363,138 @@
   text-transform: uppercase;
   margin-top: 10px;
 }
+
+/* --- NOVO BOTÃO ADICIONAR CURSO COM ANIMAÇÃO --- */
+
+.btn-abrir-adicionar {
+  /* Cores adaptadas para o seu tema escuro */
+  --font-color: #ffffff;
+  --bg-color-sub: #36393f;
+  --bg-color: #2b2d31;
+  --main-color: #85a5ff;
+  
+  position: relative;
+  width: 150px;
+  height: 40px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  border: 2px solid var(--main-color);
+  box-shadow: 4px 4px var(--main-color);
+  background-color: var(--bg-color);
+  border-radius: 10px;
+  overflow: hidden;
+  padding: 0; /* Remove paddings padrão do botão */
+}
+
+.btn-abrir-adicionar, 
+.btn-abrir-adicionar .button__icon, 
+.btn-abrir-adicionar .button__text {
+  transition: all 0.3s;
+}
+
+.btn-abrir-adicionar .button__text {
+  transform: translateX(22px);
+  color: var(--font-color);
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+.btn-abrir-adicionar .button__icon {
+  position: absolute;
+  transform: translateX(109px);
+  height: 100%;
+  width: 39px;
+  background-color: var(--bg-color-sub);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-abrir-adicionar .svg {
+  width: 20px;
+  stroke: var(--main-color);
+}
+
+.btn-abrir-adicionar:hover {
+  background: var(--bg-color);
+}
+
+.btn-abrir-adicionar:hover .button__text {
+  color: transparent;
+}
+
+.btn-abrir-adicionar:hover .button__icon {
+  width: 146px; /* Ajustado para encaixar perfeitamente sem sobrepor a borda */
+  transform: translateX(0);
+}
+
+.btn-abrir-adicionar:active {
+  transform: translate(3px, 3px);
+  box-shadow: 0px 0px var(--main-color);
+}
+
+/* --- CURSOS FINALIZADOS --- */
+
+.card-finalizado {
+  background-color: #36393f;
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 15px;
+  /* Uma borda verde na esquerda para dar aquele ar de "Concluído com sucesso" */
+  border-left: 6px solid #43b581; 
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  transition: transform 0.2s ease;
+}
+
+.card-finalizado:hover {
+  transform: translateY(-2px);
+}
+
+.titulo-finalizado {
+  color: #ffffff;
+  font-size: 1.2rem;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* Reduzimos um pouco o tamanho da Duração para ficar mais elegante */
+.duracao-finalizado {
+  color: #b9bbbe;
+  font-size: 1rem;
+  margin: 0;
+  font-weight: 500;
+}
+
+/* Arrumamos a cor do link que estava invisível */
+.link-acessar-curso {
+  color: #85a5ff; /* O mesmo azul bonito do seu tema */
+  text-decoration: none;
+  font-size: 0.95rem;
+  font-weight: bold;
+  align-self: flex-start; /* Mantém o link alinhado à esquerda */
+  padding-top: 5px;
+  transition: color 0.2s ease;
+}
+
+.link-acessar-curso:hover {
+  color: #ffffff;
+  text-decoration: underline;
+}
+
+.badge-concluido {
+  display: inline-block;
+  background-color: rgba(67, 181, 129, 0.2);
+  color: #43b581;
+  font-size: 0.75rem;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-weight: bold;
+  text-transform: uppercase;
+  margin-bottom: 5px;
+}

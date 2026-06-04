@@ -14,19 +14,23 @@ function NavBar() {
     return null;
   }
 
-  // 2. CORREÇÃO: Descobre o cargo real de dentro do objeto purificado ('RH' ou 'ADS')
+  // 2. Descobre o cargo real de dentro do objeto purificado ('RH' ou 'ADS')
   const cargo = usuario?.cargo;
 
   return (
     <nav className="navbar">
-      {/* Exibe uma tag especial se for do setor de RH */}
-      {cargo === "RH" && (
-        <span className="admin-tag">Administrador (RH)</span>
-      )}
+      
+      {/* LADO ESQUERDO */}
+      <div className="navbar-left">
+        {cargo === "RH" && (
+          <span className="admin-tag">Administrador (RH)</span>
+        )}
+      </div>
 
+      {/* CENTRO: Links de Navegação */}
       <ul className="navbar-links">
         
-        {/* 3. CORREÇÃO: Menu visível para o cargo 'ADS' */}
+        {/* Menu visível para o cargo 'ADS' */}
         {cargo === "ADS" && (
           <>
             <li><NavLink to="/home">Home</NavLink></li>
@@ -35,7 +39,7 @@ function NavBar() {
           </>
         )}
         
-        {/* 4. CORREÇÃO: Menu visível para o cargo 'RH' */}
+        {/* Menu visível para o cargo 'RH' */}
         {cargo === "RH" && (
           <>
             <li><NavLink to="/funcionario">Meu Perfil</NavLink></li>
@@ -48,12 +52,18 @@ function NavBar() {
 
       </ul>
 
-      <div className="nav-user-details" style={{ marginRight: '15px', color: '#ccc' }}>
-        Olá, <strong>{usuario?.name}</strong>
+      {/* LADO DIREITO: Apenas o botão de sair */}
+      <div className="navbar-right">
+        <NavLink to="/" className="btn-sair" onClick={logoutGlobal}>
+          Sair da conta
+        </NavLink>
       </div>
 
+<<<<<<< HEAD
       <button onClick={logoutGlobal} className='btn-voltar-login'><NavLink to="/">Sair da Conta</NavLink></button>
 
+=======
+>>>>>>> e98cdc8de449050b6417bc5603ff6c2cfbce0d8f
     </nav>
   );
 }
